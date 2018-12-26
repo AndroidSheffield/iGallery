@@ -3,7 +3,14 @@
 buildscript {
     
     repositories {
-        google()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
         jcenter()
     }
     dependencies {
@@ -17,6 +24,7 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'https://jitpack.io' }
         google()
         jcenter()
     }
@@ -26,6 +34,7 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 ext{
-    room_version = "1.1.1"
+    roomVersion = '2.0.0'
+    archLifecycleVersion = '1.1.1'
 }
 
