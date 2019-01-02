@@ -51,12 +51,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.View_Holder> {
         //Use the provided View Holder on the onCreateViewHolder method to populate the
         // current row on the RecyclerView
         if (holder!=null && items.get(position)!=null) {
-            if (items.get(position).getImageSource()!=-1) {
-                holder.imageView.setImageResource(items.get(position).getImageSource());
-            } else if (items.get(position).getPhotoPath()!=null){
-                Bitmap myBitmap = BitmapFactory.decodeFile(items.get(position).getPhotoPath());
-                holder.imageView.setImageBitmap(myBitmap);
-            }
+//            if (items.get(position).getImageSource()!=-1) {
+//                holder.imageView.setImageResource(items.get(position).getImageSource());
+//            } else if (items.get(position).getPhotoPath()!=null){
+            Bitmap myBitmap = BitmapFactory.decodeFile(items.get(position).getPhotoPath());
+            holder.imageView.setImageBitmap(myBitmap);
+
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -97,13 +97,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.View_Holder> {
         return items;
     }
 
-    public static List<ImageElement> getItemsByImage() {
-        List<ImageElement> list = new ArrayList<>();
-        for (PhotoData photoData : items) {
-            list.add(new ImageElement(Integer.parseInt(photoData.getPhotoPath())));
-        }
-        return list;
-    }
+
 
     public static void setItems(List<PhotoData> items) {
         MyAdapter.items = items;

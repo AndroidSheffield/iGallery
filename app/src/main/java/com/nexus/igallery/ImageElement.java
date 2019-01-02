@@ -4,19 +4,22 @@
 
 package com.nexus.igallery;
 
+import android.location.Location;
+
 import java.io.File;
+import java.util.Date;
 
 class ImageElement {
     int image=-1;
     File file=null;
+    double lat;
+    double lon;
+    Date date;
 
-
-    public ImageElement(int image) {
-        this.image = image;
-
-    }
-
-    public ImageElement(File fileX) {
+    public ImageElement(File fileX, double lat, double lon, Date date) {
         file= fileX;
+        this.lat = lat;
+        this.lon = lon;
+        this.date = date;
     }
 }

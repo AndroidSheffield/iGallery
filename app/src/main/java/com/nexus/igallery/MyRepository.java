@@ -12,6 +12,8 @@ import com.nexus.igallery.database.MyDAO;
 import com.nexus.igallery.database.MyRoomDatabase;
 import com.nexus.igallery.database.PhotoData;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -49,22 +51,12 @@ public class MyRepository extends ViewModel {
 
 
     public void storePhoto(ImageElement imageElement) {
-        if (imageElement.image != -1) {
-            new insertAsyncTask(mDBDao).execute(new PhotoData(String.valueOf(imageElement.image), imageElement.image));
-        }
-        else {
-            new insertAsyncTask(mDBDao).execute(new PhotoData(String.valueOf(imageElement.file), -1));
-        }
+
+        new insertAsyncTask(mDBDao).execute(new PhotoData(String.valueOf(imageElement.file), imageElement.lat, imageElement.lon, imageElement.date));
+
 
     }
-    /**
-     * called by the UI to request the generation of a new random number
-     */
-//    public void generateNewNumber() {
-//        Random r = new Random();
-//        int i1 = r.nextInt(10000 - 1) + 1;
-//        new insertAsyncTask(mDBDao).execute(new PhotoData(i1));
-//    }
+
 
 
     private static class retrieveAsyncTask extends AsyncTask<Void, Void, List<PhotoData>> {
@@ -76,9 +68,7 @@ public class MyRepository extends ViewModel {
         protected List<PhotoData> doInBackground(Void... voids) {
             List<PhotoData> list = mAsyncTaskDao.retrieveAllPhoto();
             Log.i("MyRepository", "get All data");
-            // you may want to uncomment this to check if numbers have been inserted
-            //            int ix=mAsyncTaskDao.howManyElements();
-            //            Log.i("TAG", ix+"");
+
             return list;
         }
     }
@@ -94,9 +84,7 @@ public class MyRepository extends ViewModel {
         protected Void doInBackground(final PhotoData... params) {
             mAsyncTaskDao.insert(params[0]);
             Log.i("MyRepository", "photo used: "+params[0].getPhotoPath()+"");
-            // you may want to uncomment this to check if numbers have been inserted
-            //            int ix=mAsyncTaskDao.howManyElements();
-            //            Log.i("TAG", ix+"");
+
             return null;
         }
     }

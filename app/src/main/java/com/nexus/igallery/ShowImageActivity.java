@@ -27,12 +27,12 @@ public class ShowImageActivity extends AppCompatActivity {
             if (position!=-1){
                 ImageView imageView = (ImageView) findViewById(R.id.image);
                 PhotoData element= MyAdapter.getItems().get(position);
-                if (element.getImageSource() != -1) {
-                    imageView.setImageResource(element.getImageSource());
-                } else if (element.getPhotoPath() != null) {
-                    Bitmap myBitmap = BitmapFactory.decodeFile(element.getPhotoPath());
-                    imageView.setImageBitmap(myBitmap);
-                }
+//                if (element.getImageSource() != -1) {
+//                    imageView.setImageResource(element.getImageSource());
+//                } else if (element.getPhotoPath() != null) {
+                Bitmap myBitmap = BitmapFactory.decodeFile(element.getPhotoPath());
+                imageView.setImageBitmap(myBitmap);
+//                }
             }
 
         }

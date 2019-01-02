@@ -10,6 +10,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.media.ExifInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,28 +24,46 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.Metadata;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.nexus.igallery.database.PhotoData;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
+
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_READ_EXTERNAL_STORAGE = 2987;
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 7829;
-    private static final String TAG = "CameraActivity";
+    private static final String PHOTOS_KEY = "easy_image_photos_list";
     private List<PhotoData> myPictureList = new ArrayList<>();
     private RecyclerView.Adapter mAdapter;
     private RecyclerView mRecyclerView;
+    private FusedLocationProviderClient client;
+    private int floatingType = -1;
 
     private Activity activity;
 
     private MyViewModel myViewModel;
+
 
 
     @Override
@@ -51,49 +73,48 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        requestPermissions();
+        client = LocationServices.getFusedLocationProviderClient(this);
 
-
-//
-//        mRecyclerView = (RecyclerView) findViewById(R.id.grid_recycler_view);
-//        // set up the RecyclerView
-//        int numberOfColumns = 4;
-//        mRecyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
 
         myViewModel = ViewModelProviders.of(this).get(MyViewModel.class);
+
+
         initData();
-        activity= this;
+        activity = this;
 
         int numberOfColumns = 4;
         mRecyclerView = (RecyclerView) findViewById(R.id.grid_recycler_view);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
-        mAdapter= new MyAdapter(myPictureList);
+        mAdapter = new MyAdapter(myPictureList);
         mRecyclerView.setAdapter(mAdapter);
-        myViewModel.getPhotoDataToDisplay().observe(this, new Observer<PhotoData>(){
+        myViewModel.getPhotoDataToDisplay().observe(this, new Observer<PhotoData>() {
             @Override
             public void onChanged(@Nullable final PhotoData newValue) {
 
                 // if database is empty
-                if (myPictureList.size() == 0){
-                    mAdapter= new MyAdapter(myPictureList);
+                if (myPictureList.size() == 0) {
+                    mAdapter = new MyAdapter(myPictureList);
+                    mRecyclerView.setAdapter(mAdapter);
+                } else {
+//                    myPictureList.add(newValue);
+                    mAdapter = new MyAdapter(myPictureList);
                     mRecyclerView.setAdapter(mAdapter);
                 }
-                else{
-                    myPictureList.add(newValue);
-                    mAdapter= new MyAdapter(myPictureList);
-                    mRecyclerView.setAdapter(mAdapter);
-                }
-            }});
+            }
+        });
 
         // required by Android 6.0 +
         checkPermissions(getApplicationContext());
-
+        requestPermissions();
         initEasyImage();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_camera);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EasyImage.openCamera(getActivity(), 0);
+                floatingType = 1;
+                EasyImage.openCameraForImage(getActivity(), 0);
             }
         });
 
@@ -101,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         fabGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                floatingType = 0;
                 EasyImage.openGallery(getActivity(), 0);
             }
         });
@@ -108,27 +130,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void initEasyImage() {
         EasyImage.configuration(this)
-                .setImagesFolderName("EasyImage sample")
+                .setImagesFolderName("iGallery")
                 .setCopyTakenPhotosToPublicGalleryAppFolder(true)
-                .setCopyPickedImagesToPublicGalleryAppFolder(false)
+                .setCopyPickedImagesToPublicGalleryAppFolder(true)
                 .setAllowMultiplePickInGallery(true);
     }
 
     private void initData() {
-        if (myViewModel.getAllPhotoDataToDisplay().isEmpty()){
-            for (int i = 0; i < 5; i++){
-                myViewModel.storePhoto(new ImageElement(R.drawable.joe1));
-                myViewModel.storePhoto(new ImageElement(R.drawable.joe2));
-                myViewModel.storePhoto(new ImageElement(R.drawable.joe3));
-                myPictureList.add(new PhotoData(String.valueOf(R.drawable.joe1), R.drawable.joe1));
-                myPictureList.add(new PhotoData(String.valueOf(R.drawable.joe2), R.drawable.joe1));
-                myPictureList.add(new PhotoData(String.valueOf(R.drawable.joe3), R.drawable.joe1));
-//                myPictureList = myViewModel.getAllPhotoDataToDisplay();
-            }
-        }
-        else{
-            myPictureList = myViewModel.getAllPhotoDataToDisplay();
-        }
+
+        myPictureList = myViewModel.getAllPhotoDataToDisplay();
+    }
+
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, 1);
     }
 
     private void checkPermissions(final Context context) {
@@ -180,9 +194,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -195,15 +206,18 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onImagesPicked(List<File> imageFiles, EasyImage.ImageSource source, int type) {
+            public void onImagesPicked(final List<File> imageFiles, EasyImage.ImageSource source, int type) {
+
+
                 onPhotosReturned(imageFiles);
             }
 
             @Override
             public void onCanceled(EasyImage.ImageSource source, int type) {
                 //Cancel handling, you might wanna remove taken photo if it was canceled
-                if (source == EasyImage.ImageSource.CAMERA) {
-                    File photoFile = EasyImage.lastlyTakenButCanceledPhoto(getActivity());
+                if (source == EasyImage.ImageSource.CAMERA_IMAGE) {
+                    final File photoFile = EasyImage.lastlyTakenButCanceledPhoto(getActivity());
+
                     if (photoFile != null) photoFile.delete();
                 }
             }
@@ -211,17 +225,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
     /**
      * add to the grid
      * @param returnedPhotos
      */
-    private void onPhotosReturned(List<File> returnedPhotos) {
-        for (File pFile : returnedPhotos) {
-            myViewModel.storePhoto(new ImageElement(pFile));
+    private void onPhotosReturned(final List<File> returnedPhotos) {
+        if (floatingType == 1) {
+            if (ActivityCompat.checkSelfPermission(MainActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+                requestPermissions();
+
+            }
+            client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        ImageElement temp = new ImageElement(returnedPhotos.get(0), location.getLatitude(), location.getLongitude(), new Date());
+                        myViewModel.storePhoto(temp);
+                        myPictureList.add(new PhotoData(temp.file.getAbsolutePath(), temp.lat, temp.lon, temp.date));
+                        mAdapter.notifyDataSetChanged();
+                        mRecyclerView.scrollToPosition(returnedPhotos.size() - 1);
+                    }
+
+                }
+            });
+
+
         }
-        myPictureList.addAll(getImageElements(returnedPhotos));
-        mAdapter.notifyDataSetChanged();
-        mRecyclerView.scrollToPosition(returnedPhotos.size() - 1);
+        else {
+
+
+            myPictureList.addAll(getImageElements(returnedPhotos));
+
+            mAdapter.notifyDataSetChanged();
+            mRecyclerView.scrollToPosition(returnedPhotos.size() - 1);
+
+        }
+
+
+
     }
 
     /**
@@ -232,8 +275,23 @@ public class MainActivity extends AppCompatActivity {
     private List<PhotoData> getImageElements(List<File> returnedPhotos) {
         List<PhotoData> imageElementList= new ArrayList<>();
         for (File file: returnedPhotos){
-            PhotoData element= new PhotoData(file.getAbsolutePath(), -1);
-            imageElementList.add(element);
+            ExifInterface exif = null;
+            try {
+                exif = new ExifInterface(file.getAbsolutePath());
+
+                float[] location = new float[2];
+                exif.getLatLong(location);
+                // exif Datetime need to be used
+                ImageElement temp = new ImageElement(file, Double.valueOf(location[0]), Double.valueOf(location[1]), Calendar.getInstance().getTime());
+                myViewModel.storePhoto(temp);
+                PhotoData element= new PhotoData(file.getAbsolutePath(), temp.lat, temp.lon, temp.date);
+                imageElementList.add(element);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+
         }
         return imageElementList;
     }
