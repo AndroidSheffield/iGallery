@@ -22,4 +22,6 @@ class ImageElement {
         this.lon = lon;
         this.date = date;
     }
+
+
 }

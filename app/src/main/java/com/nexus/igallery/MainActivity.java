@@ -59,7 +59,7 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int REQUEST_READ_EXTERNAL_STORAGE = 2987;
+    static final int REQUEST_READ_EXTERNAL_STORAGE = 2987;
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 7829;
     private static final String PHOTOS_KEY = "easy_image_photos_list";
     private List<PhotoData> myPictureList = new ArrayList<>();
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
         // required by Android 6.0 +
         checkPermissions(getApplicationContext());
-        requestPermissions();
+
         initEasyImage();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_camera);
@@ -193,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
+        requestPermissions();
     }
 
 
@@ -413,6 +414,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
+
 
 }
 
