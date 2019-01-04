@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">iGallery</string>
     <string name="action_settings">Settings</string>
+    <string name="sync_alert">Are you sure to sync all photos from local gallery</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+    <string name="hint_startDate">Start Date</string>
+    <string name="hint_title">Title</string>
+    <string name="btn_search">Search</string>
+    <string name="hint_endDate">End Date</string>
+    <string name="hint_description">Description</string>
 </resources>

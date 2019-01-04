@@ -1,6 +1,7 @@
 package com.nexus.igallery.database;
 
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
@@ -16,22 +17,27 @@ public class PhotoData {
     private String photoPath = null;
     private double lat = 0.0;
     private double lon = 0.0;
-    private String title = null;
-    private String description = null;
+    private String title = "";
+    private String description = "";
 
     @TypeConverters({DateConverter.class})
-    private Date date;
+    @ColumnInfo(name = "create_date")
+    private Date createDate = null;
+
+    @TypeConverters({DateConverter.class})
+    @ColumnInfo(name = "update_date")
+    private Date updateDate = null;
 
 
 
 
-    public PhotoData(String photoPath, double lat, double lon, Date date) {
+    public PhotoData(String photoPath, double lat, double lon, Date createDate) {
 //        this.name = name;
         this.photoPath = photoPath;
         this.lat = lat;
         this.lon = lon;
-        this.date = date;
-
+        this.createDate = createDate;
+        this.updateDate = createDate;
     }
 
     @android.support.annotation.NonNull
@@ -83,12 +89,20 @@ public class PhotoData {
         this.description = description;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setCreateDate(Date date) {
+        this.createDate = date;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }
 

@@ -12,6 +12,9 @@ import com.nexus.igallery.database.MyDAO;
 import com.nexus.igallery.database.MyRoomDatabase;
 import com.nexus.igallery.database.PhotoData;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +43,19 @@ public class MyRepository extends ViewModel {
     public List<PhotoData> getPhotoAllData() {
         List<PhotoData> list = null;
         try {
-            list = new retrieveAsyncTask(mDBDao).execute().get();
+            list = new retrieveAllAsyncTask(mDBDao).execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<PhotoData> getPhotoBySearch(PhotoData params) {
+        List<PhotoData> list = null;
+        try {
+            list = new retrieveAsyncTask(mDBDao).execute(params).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -57,12 +72,36 @@ public class MyRepository extends ViewModel {
 
     }
 
-
-
-    private static class retrieveAsyncTask extends AsyncTask<Void, Void, List<PhotoData>> {
+    private static class retrieveAsyncTask extends AsyncTask<PhotoData, Void, List<PhotoData>> {
         private MyDAO mAsyncTaskDao;
 
         retrieveAsyncTask(MyDAO dao) {
+            mAsyncTaskDao = dao;
+        }
+        protected List<PhotoData> doInBackground(PhotoData... params) {
+
+            List<PhotoData> list;
+            if (params[0].getCreateDate() != null) {
+
+                list = mAsyncTaskDao.retrievePhotoWithDate(params[0].getCreateDate(), params[0].getUpdateDate(), params[0].getTitle(), params[0].getDescription());
+            }
+            else {
+                list = mAsyncTaskDao.retrievePhotoWithoutDate(params[0].getTitle(), params[0].getDescription());
+            }
+
+            Log.i("MyRepository", "get data" + list.toString());
+
+            return list;
+
+        }
+    }
+
+
+
+    private static class retrieveAllAsyncTask extends AsyncTask<Void, Void, List<PhotoData>> {
+        private MyDAO mAsyncTaskDao;
+
+        retrieveAllAsyncTask(MyDAO dao) {
             mAsyncTaskDao = dao;
         }
         protected List<PhotoData> doInBackground(Void... voids) {

@@ -6,6 +6,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
+import java.util.Date;
 import java.util.List;
 
 @Dao
@@ -25,6 +26,12 @@ public interface MyDAO {
 
     @Query("SELECT * FROM PhotoData")
     List<PhotoData> retrieveAllPhoto();
+
+    @Query("SELECT * FROM PhotoData WHERE create_date BETWEEN :startDate AND :upateDate AND title LIKE :title AND description LIKE :description")
+    List<PhotoData> retrievePhotoWithDate(Date startDate, Date upateDate, String title, String description);
+
+    @Query("SELECT * FROM PhotoData WHERE title LIKE :title AND description LIKE :description")
+    List<PhotoData> retrievePhotoWithoutDate(String title, String description);
 
     @Delete
     void deleteAll(PhotoData... photoData);

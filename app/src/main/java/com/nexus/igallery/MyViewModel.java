@@ -16,6 +16,7 @@ public class MyViewModel extends AndroidViewModel {
 
     LiveData<PhotoData> photoDataToDisplay;
     List<PhotoData> allPhotoDataToDisplay;
+    List<PhotoData> searchDataToDisplay;
 
     public MyViewModel (Application application) {
         super(application);
@@ -44,6 +45,14 @@ public class MyViewModel extends AndroidViewModel {
         }
         return allPhotoDataToDisplay;
     }
+
+
+    List<PhotoData> searchPhotoDataToDisplay(PhotoData photoData) {
+        searchDataToDisplay = mRepository.getPhotoBySearch(photoData);
+
+        return searchDataToDisplay;
+    }
+
 
     public void storePhoto(ImageElement imageElement) {
         mRepository.storePhoto(imageElement);

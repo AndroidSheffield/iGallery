@@ -19,12 +19,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.drew.imaging.ImageMetadataReader;
@@ -39,10 +44,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
@@ -92,15 +100,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable final PhotoData newValue) {
 
-                // if database is empty
-                if (myPictureList.size() == 0) {
-                    mAdapter = new MyAdapter(myPictureList);
-                    mRecyclerView.setAdapter(mAdapter);
-                } else {
-//                    myPictureList.add(newValue);
-                    mAdapter = new MyAdapter(myPictureList);
-                    mRecyclerView.setAdapter(mAdapter);
-                }
+                mAdapter = new MyAdapter(myPictureList);
+                mRecyclerView.setAdapter(mAdapter);
+
             }
         });
 
@@ -198,6 +200,83 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
+        if ((resultCode == Activity.RESULT_OK) && requestCode == 10086) {
+            Bundle bundle = data.getExtras();
+            PhotoData photoData;
+            String startDate = String.valueOf(bundle.get("search_startDate"));
+            String endDate = String.valueOf(bundle.get("search_endDate"));
+            String title = String.valueOf(bundle.get("title"));
+            String description = String.valueOf(bundle.get("description"));
+            if (!startDate.equals("")) {
+
+                try {
+                    Date sd = new SimpleDateFormat("yyyy-MM-dd", Locale.UK).parse(startDate);
+                    photoData = new PhotoData("",0.0, 0.0, sd);
+                    if (!title.equals("")) {
+                        if (!data.getStringExtra("description").equals("")) {
+                            photoData.setTitle("%" + data.getStringExtra("title") + "%");
+                            photoData.setDescription("%" + data.getStringExtra("description") + "%");
+                        }
+                        else {
+                            photoData.setTitle("%" + data.getStringExtra("title") + "%");
+                            photoData.setDescription("%");
+                        }
+
+                    }
+                    else if (!description.equals("")) {
+                        photoData.setTitle("%");
+                        photoData.setDescription("%" + data.getStringExtra("description") + "%");
+                    }
+
+                    if (!endDate.equals("")) {
+                        photoData.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd", Locale.UK).parse(endDate));
+                    }
+                    else {
+                        photoData.setUpdateDate(new Date());
+                    }
+                    myPictureList = myViewModel.searchPhotoDataToDisplay(photoData);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            else {
+                photoData = new PhotoData("",0.0, 0.0, null);
+                if (!title.equals("")) {
+                    if (!data.getStringExtra("description").equals("")) {
+                        photoData.setTitle("%" + data.getStringExtra("title") + "%");
+                        photoData.setDescription("%" + data.getStringExtra("description") + "%");
+                    }
+                    else {
+                        photoData.setTitle("%" + data.getStringExtra("title") + "%");
+                        photoData.setDescription("%");
+                    }
+
+                }
+                else if (!description.equals("")) {
+                    photoData.setTitle("%");
+                    photoData.setDescription("%" + data.getStringExtra("description") + "%");
+                }
+                if (!endDate.equals("")) {
+                    try {
+                        photoData.setCreateDate(new Date(1900, 01, 01));
+                        photoData.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd", Locale.UK).parse(endDate));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                myPictureList = myViewModel.searchPhotoDataToDisplay(photoData);
+            }
+
+
+            mAdapter.notifyDataSetChanged();
+            mAdapter = new MyAdapter(myPictureList);
+            mRecyclerView.setAdapter(mAdapter);
+        }
+
         EasyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
             @Override
             public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
@@ -241,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Location location) {
                     if (location != null) {
-                        ImageElement temp = new ImageElement(returnedPhotos.get(0), location.getLatitude(), location.getLongitude(), new Date());
+                        ImageElement temp = new ImageElement(returnedPhotos.get(0), location.getLatitude(), location.getLongitude(), Calendar.getInstance().getTime());
                         myViewModel.storePhoto(temp);
                         myPictureList.add(new PhotoData(temp.file.getAbsolutePath(), temp.lat, temp.lon, temp.date));
                         mAdapter.notifyDataSetChanged();
@@ -281,11 +360,18 @@ public class MainActivity extends AppCompatActivity {
 
                 float[] location = new float[2];
                 exif.getLatLong(location);
+                try {
+                    Date date = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(exif.getAttribute(ExifInterface.TAG_DATETIME));
+
+                    ImageElement temp = new ImageElement(file, Double.valueOf(location[0]), Double.valueOf(location[1]), date);
+                    myViewModel.storePhoto(temp);
+                    PhotoData element= new PhotoData(file.getAbsolutePath(), temp.lat, temp.lon, temp.date);
+                    imageElementList.add(element);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 // exif Datetime need to be used
-                ImageElement temp = new ImageElement(file, Double.valueOf(location[0]), Double.valueOf(location[1]), Calendar.getInstance().getTime());
-                myViewModel.storePhoto(temp);
-                PhotoData element= new PhotoData(file.getAbsolutePath(), temp.lat, temp.lon, temp.date);
-                imageElementList.add(element);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -301,6 +387,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.main_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.search_photo:
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivityForResult(intent, 10086);
+
+                return true;
+            case R.id.synchronize:
+                MyDialogFragment sync = new MyDialogFragment().newInstance("Synchronize", "Are you sure to sync all photos from local gallery?", "1");
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                sync.show(fragmentManager, "fragment_sync");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+    }
 
 }
 
