@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -29,6 +30,20 @@ import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static com.nexus.igallery.MainActivity.REQUEST_READ_EXTERNAL_STORAGE;
 
 public class MyDialogFragment extends DialogFragment {
+
+    private int message;
+    private MDFListener mdfListener;
+
+    public interface MDFListener {
+        void getDataFromDialog(int message);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mdfListener = (MDFListener) context;
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -38,7 +53,8 @@ public class MyDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (((String) getArguments().get("type")).equals("1")) {
-                            getAllPhotos();
+                            message = 1;
+
                         }
                         dialog.dismiss();
                     }
@@ -66,59 +82,12 @@ public class MyDialogFragment extends DialogFragment {
     }
 
 
-    public void getAllPhotos() {
-        MyViewModel myViewModel = ViewModelProviders.of(this).get(MyViewModel.class);
 
-        List<PhotoData> myPictureList = myViewModel.getAllPhotoDataToDisplay();
-
-        List<PhotoData> photoDataList = new ArrayList<>();
-        if (ActivityCompat.checkSelfPermission(getActivity(), READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE);
-
+    @Override
+    public void onDestroy() {
+        if (mdfListener != null) {
+            mdfListener.getDataFromDialog(message);
         }
-        Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        String[] projImage = {MediaStore.Images.Media.DATA};
-        Cursor mCursor = getActivity().getContentResolver().query(mImageUri, projImage,
-                MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=?",
-                new String[]{"image/jpeg", "image/png", "image/jpg"},
-                MediaStore.Images.Media.DATE_MODIFIED + " desc");
-        if (mCursor != null) {
-            while (mCursor.moveToNext()) {
-
-                String path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DATA));
-                try {
-                    ExifInterface exif = new ExifInterface(path);
-                    Date date = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(exif.getAttribute(ExifInterface.TAG_DATETIME));
-                    for (PhotoData temp : myPictureList) {
-                        if (temp.getPhotoPath().equals(path)) {
-                            break;
-                        }
-                        else if (date.equals(temp.getCreateDate())) {
-                            break;
-                        }
-                        else {
-                            float[] location = new float[2];
-                            exif.getLatLong(location);
-                            myViewModel.storePhoto(new ImageElement(new File(path), Double.valueOf(location[0]), Double.valueOf(location[1]), date));
-                        }
-
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-
-            }
-            mCursor.close();
-        }
-
-
+        super.onDestroy();
     }
-
-
-
-
 }

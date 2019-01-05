@@ -56,8 +56,9 @@ import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static com.nexus.igallery.commonMethod.getAllPhotos;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MyDialogFragment.MDFListener {
 
     static final int REQUEST_READ_EXTERNAL_STORAGE = 2987;
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 7829;
@@ -166,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                     alert.show();
 
                 } else {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE);
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE);
                 }
 
             }
@@ -193,7 +194,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
-        requestPermissions();
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+            requestPermissions();
+
+        }
     }
 
 
@@ -416,7 +420,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
+    @Override
+    public void getDataFromDialog(int message) {
+        if (message == 1) {
+            myPictureList.addAll(getAllPhotos(getActivity(), myViewModel, myPictureList, REQUEST_READ_EXTERNAL_STORAGE));
+            mAdapter.notifyDataSetChanged();
+            mAdapter = new MyAdapter(myPictureList);
+            mRecyclerView.setAdapter(mAdapter);
+        }
+    }
 }
 
