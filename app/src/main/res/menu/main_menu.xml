@@ -11,6 +11,7 @@
         android:icon="@drawable/places_ic_search"
         android:orderInCategory="100"
         android:title="Search"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:showAsAction="always" />
 
     <item
