@@ -3,7 +3,7 @@ package com.nexus.igallery;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.ActionBar;
+
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -12,8 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+
 import android.media.ExifInterface;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,21 +20,18 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.drew.imaging.ImageMetadataReader;
-import com.drew.imaging.ImageProcessingException;
-import com.drew.metadata.Metadata;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -69,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
     private RecyclerView mRecyclerView;
     private FusedLocationProviderClient client;
     private int floatingType = -1;
-
+    private final int displayMode = 1;
     private Activity activity;
 
     private MyViewModel myViewModel;
@@ -396,9 +392,9 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu,menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -414,6 +410,13 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 sync.show(fragmentManager, "fragment_sync");
                 return true;
+            case R.id.display_map:
+                if (displayMode == 1) {
+                    Intent mapView =  new Intent(MainActivity.this, GalleryMapActivity.class);
+                    startActivity(mapView);
+                }
+
+
             case android.R.id.home:
                 finish();
                 return true;

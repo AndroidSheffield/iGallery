@@ -30,6 +30,9 @@
             android:name=".ShowImageActivity"
             />
         <activity android:name=".SearchActivity" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCHe0RhXQMkB4IQnYGJ6OWZ8hDhhu_Abo8"/>
 
     </application>
 
