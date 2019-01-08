@@ -57,4 +57,8 @@ public class MyViewModel extends AndroidViewModel {
     public void storePhoto(ImageElement imageElement) {
         mRepository.storePhoto(imageElement);
     }
+
+    public void updatePhoto(PhotoData photoData) {
+        mRepository.updatePhoto(photoData);
+    }
 }

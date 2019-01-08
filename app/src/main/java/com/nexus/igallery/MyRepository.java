@@ -64,12 +64,15 @@ public class MyRepository extends ViewModel {
         return list;
     }
 
+    public void updatePhoto(PhotoData photoData) {
+        new updateAsyncTask(mDBDao).execute(photoData);
+    }
+
+
+
 
     public void storePhoto(ImageElement imageElement) {
-
-        new insertAsyncTask(mDBDao).execute(new PhotoData(String.valueOf(imageElement.file), imageElement.lat, imageElement.lon, imageElement.date));
-
-
+        new insertAsyncTask(mDBDao).execute(new PhotoData(String.valueOf(imageElement.file), imageElement.lat, imageElement.lon, imageElement.date, imageElement.date));
     }
 
     private static class retrieveAsyncTask extends AsyncTask<PhotoData, Void, List<PhotoData>> {
@@ -123,6 +126,22 @@ public class MyRepository extends ViewModel {
         protected Void doInBackground(final PhotoData... params) {
             mAsyncTaskDao.insert(params[0]);
             Log.i("MyRepository", "photo used: "+params[0].getPhotoPath()+"");
+
+            return null;
+        }
+    }
+
+    private static class updateAsyncTask extends AsyncTask<PhotoData, Void, Void> {
+        private MyDAO mAsyncTaskDao;
+        private LiveData<PhotoData> photoData;
+
+        updateAsyncTask(MyDAO dao) {
+            mAsyncTaskDao = dao;
+        }
+        @Override
+        protected Void doInBackground(final PhotoData... params) {
+            mAsyncTaskDao.update(params[0]);
+            Log.i("MyRepository", "photo updated: "+ params[0].getPhotoPath() + "");
 
             return null;
         }

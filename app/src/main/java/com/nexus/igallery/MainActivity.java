@@ -132,8 +132,8 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
     private void initEasyImage() {
         EasyImage.configuration(this)
                 .setImagesFolderName("iGallery")
-                .setCopyTakenPhotosToPublicGalleryAppFolder(true)
-                .setCopyPickedImagesToPublicGalleryAppFolder(true)
+                .setCopyTakenPhotosToPublicGalleryAppFolder(false)
+                .setCopyPickedImagesToPublicGalleryAppFolder(false)
                 .setAllowMultiplePickInGallery(true);
     }
 
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
 
                 try {
                     Date sd = new SimpleDateFormat("yyyy-MM-dd", Locale.UK).parse(startDate);
-                    photoData = new PhotoData("",0.0, 0.0, sd);
+                    photoData = new PhotoData("",0.0, 0.0, sd, null);
                     if (!title.equals("")) {
                         if (!data.getStringExtra("description").equals("")) {
                             photoData.setTitle("%" + data.getStringExtra("title") + "%");
@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
 
             }
             else {
-                photoData = new PhotoData("",0.0, 0.0, null);
+                photoData = new PhotoData("",0.0, 0.0, null, null);
                 if (!title.equals("")) {
                     if (!data.getStringExtra("description").equals("")) {
                         photoData.setTitle("%" + data.getStringExtra("title") + "%");
@@ -325,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
                     if (location != null) {
                         ImageElement temp = new ImageElement(returnedPhotos.get(0), location.getLatitude(), location.getLongitude(), Calendar.getInstance().getTime());
                         myViewModel.storePhoto(temp);
-                        myPictureList.add(new PhotoData(temp.file.getAbsolutePath(), temp.lat, temp.lon, temp.date));
+                        myPictureList.add(new PhotoData(temp.file.getAbsolutePath(), temp.lat, temp.lon, temp.date, temp.date));
                         mAdapter.notifyDataSetChanged();
                         mRecyclerView.scrollToPosition(returnedPhotos.size() - 1);
                     }
@@ -368,7 +368,7 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
 
                     ImageElement temp = new ImageElement(file, Double.valueOf(location[0]), Double.valueOf(location[1]), date);
                     myViewModel.storePhoto(temp);
-                    PhotoData element= new PhotoData(file.getAbsolutePath(), temp.lat, temp.lon, temp.date);
+                    PhotoData element= new PhotoData(file.getAbsolutePath(), temp.lat, temp.lon, temp.date, temp.date);
                     imageElementList.add(element);
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -414,6 +414,9 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
                 if (displayMode == 1) {
                     Intent mapView =  new Intent(MainActivity.this, GalleryMapActivity.class);
                     startActivity(mapView);
+                }
+                else if (displayMode == 2) {
+
                 }
 
 

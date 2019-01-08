@@ -58,7 +58,7 @@ public class commonMethod {
                             float[] location = new float[2];
                             exif.getLatLong(location);
                             myViewModel.storePhoto(new ImageElement(new File(path), Double.valueOf(location[0]), Double.valueOf(location[1]), date));
-                            photoDataList.add(new PhotoData(path, Double.valueOf(location[0]), Double.valueOf(location[1]), date));
+                            photoDataList.add(new PhotoData(path, Double.valueOf(location[0]), Double.valueOf(location[1]), date, date));
                         }
 
                     }

@@ -31,13 +31,13 @@ public class PhotoData {
 
 
 
-    public PhotoData(String photoPath, double lat, double lon, Date createDate) {
+    public PhotoData(String photoPath, double lat, double lon, Date createDate, Date updateDate) {
 //        this.name = name;
         this.photoPath = photoPath;
         this.lat = lat;
         this.lon = lon;
         this.createDate = createDate;
-        this.updateDate = createDate;
+        this.updateDate = updateDate;
     }
 
     @android.support.annotation.NonNull

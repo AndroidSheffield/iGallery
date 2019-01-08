@@ -5,6 +5,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,9 @@ public interface MyDAO {
 
     @Delete
     void delete(PhotoData photoData);
+
+    @Update
+    void update(PhotoData photoData);
 
     // it selects a random element
     @Query("SELECT * FROM PhotoData ORDER BY RANDOM() LIMIT 1")
