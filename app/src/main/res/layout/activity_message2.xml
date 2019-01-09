@@ -3,17 +3,75 @@
   ~ Copyright (c) 2017. This code has been developed by Fabio Ciravegna, The University of Sheffield. All rights reserved. No part of this code can be used without the explicit written permission by the author
   -->
 
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<!--I let all modules stay in center and have appointed ranges with others. All modules have regular size.
+ I choose this ScrollView because of too long layout in this activity.-->
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:id="@+id/mScro"
+    android:fillViewport="true"
+    >
 
-   <ImageView
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:id="@+id/image"/>
+    <LinearLayout
+        android:id="@+id/mLinear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        >
+        <!--上面gravity属性的参数：center为居中，center_horizontal为水平居中，center_vertical为垂直居中-->
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="350dip"
+        android:layout_margin="5dip"
+        android:id="@+id/image"/>
 
+    <!--Edit data of photos-->
+    <Button
+        android:id="@+id/buttonEdit"
+        android:layout_width="120dip"
+        android:layout_height="40dip"
+        android:layout_margin="5dip"
+        android:text="Edit" />
 
-</android.support.design.widget.CoordinatorLayout>
+    <!--Show data of photos-->
+    <TextView
+        android:id="@+id/info_title"
+        android:layout_width="match_parent"
+        android:layout_height="15dip"
+        android:layout_margin="5dip"
+        android:gravity="center"
+        android:text="title"
+        />
+
+    <TextView
+        android:id="@+id/info_description"
+        android:layout_width="match_parent"
+        android:layout_height="15dip"
+        android:layout_margin="5dip"
+        android:gravity="center"
+        android:text="description"
+        />
+
+    <!--This control is the internal map-->
+    <fragment
+        android:id="@+id/map"
+        android:layout_width="225dip"
+        android:layout_height="225dip"
+        android:layout_margin="10dip"
+        android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+    <!--This button connected to the external map-->
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="120dip"
+        android:layout_height="60dip"
+        android:layout_margin="5dip"
+        android:text="Open in Google Map"
+        android:onClick="myClick"/>
+
+    </LinearLayout>
+
+</ScrollView>
