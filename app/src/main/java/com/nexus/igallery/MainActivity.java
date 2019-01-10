@@ -415,14 +415,10 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
                 sync.show(fragmentManager, "fragment_sync");
                 return true;
             case R.id.display_map:
-                if (displayMode == 1) {
-                    Intent mapView =  new Intent(MainActivity.this, GalleryMapActivity.class);
-                    startActivity(mapView);
-                }
-                else if (displayMode == 2) {
+                Intent mapView =  new Intent(MainActivity.this, GalleryMapActivity.class);
+                startActivity(mapView);
 
-                }
-
+                return true;
 
             case android.R.id.home:
                 finish();

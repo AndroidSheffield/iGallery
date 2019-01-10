@@ -10,6 +10,7 @@
         android:id="@+id/search_photo"
 
         android:orderInCategory="100"
+
         android:title="Search"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:showAsAction="always" />

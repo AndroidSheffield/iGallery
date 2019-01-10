@@ -1,13 +1,16 @@
 package com.nexus.igallery;
 
+import android.Manifest;
 import android.app.FragmentManager;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +34,8 @@ import com.nexus.igallery.database.PhotoData;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 
 public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCallback, ClusterManager.OnClusterClickListener<ImageElement>, ClusterManager.OnClusterInfoWindowClickListener<ImageElement>, ClusterManager.OnClusterItemClickListener<ImageElement>, ClusterManager.OnClusterItemInfoWindowClickListener<ImageElement> {
@@ -66,6 +71,12 @@ public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCa
             return;
         }
         mMap = googleMap;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, 1);
+        }
+
+
+        mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
         startMap();
     }
@@ -226,11 +237,7 @@ public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCa
 
     @Override
     public void onBackPressed() {
-        if (!this.getSupportFragmentManager().popBackStackImmediate()) {
-            supportFinishAfterTransition();
-        }
-        else {
-            super.onBackPressed();
-        }
+
+        finish();
     }
 }
