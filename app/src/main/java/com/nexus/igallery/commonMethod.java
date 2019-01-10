@@ -29,10 +29,7 @@ public class commonMethod {
 
 
         List<PhotoData> photoDataList = new ArrayList<>();
-        if (ActivityCompat.checkSelfPermission(activity, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, request);
 
-        }
         Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         String[] projImage = {MediaStore.Images.Media.DATA};
         Cursor mCursor = activity.getContentResolver().query(mImageUri, projImage,
@@ -47,21 +44,29 @@ public class commonMethod {
                 try {
                     ExifInterface exif = new ExifInterface(path);
                     Date date = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(exif.getAttribute(ExifInterface.TAG_DATETIME));
-                    for (PhotoData temp : myPictureList) {
-                        if (temp.getPhotoPath().equals(path)) {
-                            break;
-                        }
-                        else if (date.equals(temp.getCreateDate())) {
-                            break;
-                        }
-                        else {
-                            float[] location = new float[2];
-                            exif.getLatLong(location);
-                            myViewModel.storePhoto(new ImageElement(new File(path), Double.valueOf(location[0]), Double.valueOf(location[1]), date));
-                            photoDataList.add(new PhotoData(path, Double.valueOf(location[0]), Double.valueOf(location[1]), date, date));
-                        }
-
+                    if (myPictureList.size() == 0) {
+                        float[] location = new float[2];
+                        exif.getLatLong(location);
+                        myViewModel.storePhoto(new ImageElement(new File(path), Double.valueOf(location[0]), Double.valueOf(location[1]), date));
+                        photoDataList.add(new PhotoData(path, Double.valueOf(location[0]), Double.valueOf(location[1]), date, date));
                     }
+                    else {
+                        for (PhotoData temp : myPictureList) {
+                            if (temp.getPhotoPath().equals(path)) {
+                                break;
+                            }
+                            else if (date.equals(temp.getCreateDate())) {
+                                break;
+                            }
+                            else {
+                                float[] location = new float[2];
+                                exif.getLatLong(location);
+                                myViewModel.storePhoto(new ImageElement(new File(path), Double.valueOf(location[0]), Double.valueOf(location[1]), date));
+                                photoDataList.add(new PhotoData(path, Double.valueOf(location[0]), Double.valueOf(location[1]), date, date));
+                            }
+                        }
+                    }
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

@@ -53,6 +53,7 @@ import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static com.nexus.igallery.commonMethod.getAllPhotos;
 
 public class MainActivity extends AppCompatActivity implements MyDialogFragment.MDFListener {
@@ -194,6 +195,9 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
         }
         if (ActivityCompat.checkSelfPermission(MainActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
             requestPermissions();
+        }
+        if (ActivityCompat.checkSelfPermission(activity, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE);
 
         }
     }

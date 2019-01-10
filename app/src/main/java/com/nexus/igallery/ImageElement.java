@@ -19,6 +19,8 @@ class ImageElement implements ClusterItem {
     double lat;
     double lon;
     Date date;
+    String title;
+    String description;
     PhotoData photoData;
     private final LatLng mPosition;
 
@@ -32,6 +34,8 @@ class ImageElement implements ClusterItem {
         this.date = date;
         this.mPosition = new LatLng(lat, lon);
     }
+
+
 
     public ImageElement(PhotoData photoData) {
         this.photoData = photoData;

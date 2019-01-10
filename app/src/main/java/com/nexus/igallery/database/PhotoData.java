@@ -17,8 +17,8 @@ public class PhotoData {
     private String photoPath = null;
     private double lat = 0.0;
     private double lon = 0.0;
-    private String title = "";
-    private String description = "";
+    private String title = "title";
+    private String description = "description";
 
     @TypeConverters({DateConverter.class})
     @ColumnInfo(name = "create_date")

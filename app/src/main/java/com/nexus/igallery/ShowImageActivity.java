@@ -27,6 +27,7 @@ import java.util.Date;
 public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private LatLng googleLatLng;//Locations of photos
+    private TextView title, description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +37,8 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        String titles="Tests";
-        String desc="Test";
-
         Bundle b = getIntent().getExtras();
 
-        final String titled = "The end of May."; //element.getTitle();
-        final String descriptions = "The picture.";//element.getDescription();
         int position=-1;
         if(b != null) {
             position = b.getInt("position");
@@ -52,15 +48,11 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
 
                 googleLatLng = new LatLng(element.getLat(),element.getLon());
 
-                Date date = element.getUpdateDate();
-                Date cdate = element.getCreateDate();
-                TextView title = (TextView) findViewById(R.id.info_title);
-                //title.setText(b.getString("titled"));
-                title.setText("test and test");
+                title = findViewById(R.id.info_title);
+                title.setText(element.getTitle());
 
-                TextView description = (TextView) findViewById(R.id.info_description);
-                //description.setText(b.getString("descriptions"));
-                description.setText("test");
+                description = findViewById(R.id.info_description);
+                description.setText(element.getDescription());
 
                 Bitmap myBitmap = BitmapFactory.decodeFile(element.getPhotoPath());
                 imageView.setImageBitmap(myBitmap);
@@ -69,11 +61,11 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
 
         }
 
-        Button btn = (Button) findViewById(R.id.buttonEdit);
+        Button btn = findViewById(R.id.buttonEdit);
         final int finalPosition = position;
         btn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Intent intent = new Intent(ShowImageActivity.this, TestActivity.class);
+                Intent intent = new Intent(ShowImageActivity.this, EditActivity.class);
                 intent.putExtra("position", finalPosition);
                 startActivity(intent);
 

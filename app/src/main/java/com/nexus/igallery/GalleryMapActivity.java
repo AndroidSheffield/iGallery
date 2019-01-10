@@ -69,8 +69,16 @@ public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCa
     }
 
     public void startMap() {
+        if (myPictureList.size() != 0) {
+            PhotoData photoData = myPictureList.get(0);
+            getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(photoData.getLat(), photoData.getLon()), 9.5f));
+        }
+        else {
+            getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(53.7412, -2.02407), 9.5f));
+        }
 
-        getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.503186, -0.126446), 9.5f));
+
+
 
         mClusterManager = new ClusterManager<ImageElement>(this, getMap());
         mClusterManager.setRenderer(new ImageRenderer());

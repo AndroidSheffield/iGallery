@@ -13,8 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.nexus.igallery.database.PhotoData;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +58,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.View_Holder> {
             Bitmap myBitmap = BitmapFactory.decodeFile(items.get(position).getPhotoPath());
             holder.imageView.setImageBitmap(myBitmap);
 
+            if (!items.get(position).getTitle().equals("")) {
+                holder.imageTitle.setText(items.get(position).getTitle());
+            }
+            if (!items.get(position).getDescription().equals("")) {
+                holder.imageDescription.setText(items.get(position).getDescription());
+            }
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -80,11 +89,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.View_Holder> {
 
     public class View_Holder extends RecyclerView.ViewHolder  {
         ImageView imageView;
-
+        TextView imageTitle;
+        TextView imageDescription;
 
         View_Holder(View itemView) {
             super(itemView);
+
             imageView = (ImageView) itemView.findViewById(R.id.image_item);
+            imageTitle = itemView.findViewById(R.id.item_title);
+            imageDescription = itemView.findViewById(R.id.item_description);
 
         }
 

@@ -7,16 +7,13 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
 
-    <!--以下权限在Google Play服务清单文件中定义，会在编译时自动合并到应用的清单文件中。不需要显式地将它们添加到清单文件中-->
     <!--These permissions are used for Google Map, but they have also defined by Google Play Service so they are not essential-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
-    <!--这条权限用于兼容Google Play Service 8.3以下的版本(Android 6.0, API 23以下)-->
     <!--This permission is used for Google Map to be compatible with previous versions before 8.3 of Google Play Service (before Android 6.0, API 23)-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
-    <!--下面的两条权限在谷歌地图API中是不要求的，但是在开发过程中最好添加-->
     <!--These two permissions are not required in Google Map API, but it's better to add them in development-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -51,6 +48,7 @@
             />
         <activity android:name=".SearchActivity" />
         <activity android:name=".GalleryMapActivity" />
+        <activity android:name=".EditActivity" />
 
         <!--Google Play Service version, not essential-->
         <meta-data
@@ -62,7 +60,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCHe0RhXQMkB4IQnYGJ6OWZ8hDhhu_Abo8"/>
 
-        <!--这句代码用于兼容API 28！绝对不能动！-->
         <!--This line of code is used to be compatible with API 28 for Google Map API-->
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
 
