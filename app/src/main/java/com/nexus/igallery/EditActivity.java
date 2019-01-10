@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ public class EditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myViewModel = ViewModelProviders.of(this).get(MyViewModel.class);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         setContentView(R.layout.activity_edit);
@@ -32,32 +34,44 @@ public class EditActivity extends AppCompatActivity {
         if(b !=null) {
             position = b.getInt("position");
             if (position != -1) {
-//                ImageView imageView = (ImageView) findViewById(R.id.image);
                 element = MyAdapter.getItems().get(position);
-                final File file = new File(element.getPhotoPath());
-                Button btn = (Button) findViewById(R.id.btn_save);
+                Button btn = findViewById(R.id.btn_save);
+                final int finalPosition = position;
                 btn.setOnClickListener(new View.OnClickListener() {  //为按钮添加单击监听事件
                     @Override
 
                     public void onClick(View v) {
                         //tittle
-                        String titles= ((EditText) findViewById(R.id.edit_title)).getText().toString();
+                        String title= ((EditText) findViewById(R.id.edit_title)).getText().toString();
                         //description
-                        String descriptions = ((EditText) findViewById(R.id.edit_description)).getText().toString();
+                        String description = ((EditText) findViewById(R.id.edit_description)).getText().toString();
 
-                        element.setTitle(titles);
-                        element.setDescription(descriptions);
+                        element.setTitle(title);
+                        element.setDescription(description);
                         element.setUpdateDate(new Date());
                         myViewModel.updatePhoto(element);
+                        Intent intent = new Intent();
+                        intent.putExtra("title", title);
+                        intent.putExtra("description", description);
+                        intent.putExtra("new_date", element.getUpdateDate());
+                        intent.putExtra("position", finalPosition);
+                        setResult(RESULT_OK, intent);
                         finish();
 
                     }
                 });
             }
         }
+    }
 
-
-
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

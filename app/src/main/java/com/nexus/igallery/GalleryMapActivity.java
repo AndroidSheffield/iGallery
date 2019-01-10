@@ -1,6 +1,8 @@
 package com.nexus.igallery;
 
+import android.app.FragmentManager;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -36,7 +38,7 @@ public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCa
     private ClusterManager<ImageElement> mClusterManager;
     private MyViewModel myViewModel;
     private List<PhotoData> myPictureList = new ArrayList<>();
-    private final int displayMode = 2;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -138,11 +140,24 @@ public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCa
 
     @Override
     public boolean onClusterItemClick(ImageElement imageElement) {
+
         return false;
     }
 
     @Override
     public void onClusterItemInfoWindowClick(ImageElement imageElement) {
+        int position = -1;
+        for (PhotoData photoData : MyAdapter.getItems()) {
+            if (imageElement.photoData.getPhotoPath().equals(photoData.getPhotoPath())) {
+                position = MyAdapter.getItems().indexOf(photoData);
+                break;
+            }
+        }
+        if (position != -1) {
+            Intent intent = new Intent(this, ShowImageActivity.class);
+            intent.putExtra("position", position);
+            this.startActivity(intent);
+        }
 
     }
 
@@ -157,7 +172,7 @@ public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCa
 
             View multiProfile = getLayoutInflater().inflate(R.layout.map_profile, null);
             mClusterIconGenerator.setContentView(multiProfile);
-            mClusterImageView = (ImageView) multiProfile.findViewById(R.id.image);
+            mClusterImageView = multiProfile.findViewById(R.id.image);
 
             mImageView = new ImageView(getApplicationContext());
             mDimension = (int) getResources().getDimension(R.dimen.custom_profile_image);
@@ -174,7 +189,8 @@ public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCa
             Bitmap myBitmap = BitmapFactory.decodeFile(image.photoData.getPhotoPath());
             mImageView.setImageBitmap(myBitmap);
             Bitmap icon = mIconGenerator.makeIcon();
-            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(image.photoData.getTitle());
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(image.photoData.getTitle() + ": " + image.photoData.getDescription());
+
         }
 
         @Override
@@ -206,5 +222,15 @@ public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCa
             return cluster.getSize() > 1;
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!this.getSupportFragmentManager().popBackStackImmediate()) {
+            supportFinishAfterTransition();
+        }
+        else {
+            super.onBackPressed();
+        }
     }
 }

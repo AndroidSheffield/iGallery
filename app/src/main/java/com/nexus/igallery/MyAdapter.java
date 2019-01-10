@@ -95,7 +95,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.View_Holder> {
         View_Holder(View itemView) {
             super(itemView);
 
-            imageView = (ImageView) itemView.findViewById(R.id.image_item);
+            imageView = itemView.findViewById(R.id.image_item);
             imageTitle = itemView.findViewById(R.id.item_title);
             imageDescription = itemView.findViewById(R.id.item_description);
 
@@ -108,6 +108,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.View_Holder> {
         return items;
     }
 
+    public static void changeItem(int index, PhotoData photoData) {
+        items.set(index, photoData);
+    }
 
 
     public static void setItems(List<PhotoData> items) {

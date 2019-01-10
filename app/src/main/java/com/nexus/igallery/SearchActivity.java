@@ -117,9 +117,6 @@ public class SearchActivity extends AppCompatActivity {
         searchEndDate.setText(sdf.format(searchEndCalendar.getTime()));
     }
 
-    public Activity getActivity() {
-        return activity;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
