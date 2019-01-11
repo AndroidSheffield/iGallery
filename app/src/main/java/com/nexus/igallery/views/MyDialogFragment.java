@@ -1,33 +1,13 @@
-package com.nexus.igallery;
+package com.nexus.igallery.views;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.media.ExifInterface;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 
-import com.nexus.igallery.database.PhotoData;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static com.nexus.igallery.MainActivity.REQUEST_READ_EXTERNAL_STORAGE;
+import com.nexus.igallery.R;
 
 public class MyDialogFragment extends DialogFragment {
 

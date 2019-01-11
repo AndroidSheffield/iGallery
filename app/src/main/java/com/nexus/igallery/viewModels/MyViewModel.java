@@ -1,11 +1,12 @@
-package com.nexus.igallery;
+package com.nexus.igallery.viewModels;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
-import com.nexus.igallery.database.PhotoData;
+import com.nexus.igallery.models.ImageElement;
+import com.nexus.igallery.models.PhotoData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +32,14 @@ public class MyViewModel extends AndroidViewModel {
      * getter for the live data
      * @return
      */
-    LiveData<PhotoData> getPhotoDataToDisplay() {
+    public LiveData<PhotoData> getPhotoDataToDisplay() {
         if (photoDataToDisplay == null) {
             photoDataToDisplay = new MutableLiveData<PhotoData>();
         }
         return photoDataToDisplay;
     }
 
-    List<PhotoData> getAllPhotoDataToDisplay() {
+    public List<PhotoData> getAllPhotoDataToDisplay() {
         allPhotoDataToDisplay = mRepository.getPhotoAllData();
         if (allPhotoDataToDisplay == null) {
             allPhotoDataToDisplay = new ArrayList<PhotoData>();
@@ -47,15 +48,15 @@ public class MyViewModel extends AndroidViewModel {
     }
 
 
-    List<PhotoData> searchPhotoDataToDisplay(PhotoData photoData) {
+    public List<PhotoData> searchPhotoDataToDisplay(PhotoData photoData) {
         searchDataToDisplay = mRepository.getPhotoBySearch(photoData);
 
         return searchDataToDisplay;
     }
 
 
-    public void storePhoto(ImageElement imageElement) {
-        mRepository.storePhoto(imageElement);
+    public void storePhoto(PhotoData photoData) {
+        mRepository.storePhoto(photoData);
     }
 
     public void updatePhoto(PhotoData photoData) {

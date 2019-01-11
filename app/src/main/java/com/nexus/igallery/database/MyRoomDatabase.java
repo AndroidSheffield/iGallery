@@ -6,6 +6,8 @@ import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.nexus.igallery.models.PhotoData;
+
 
 @android.arch.persistence.room.Database(entities = {PhotoData.class}, version = 1, exportSchema = false)
 @TypeConverters({DateConverter.class})

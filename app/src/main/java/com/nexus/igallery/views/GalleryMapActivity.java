@@ -1,7 +1,6 @@
-package com.nexus.igallery;
+package com.nexus.igallery.views;
 
 import android.Manifest;
-import android.app.FragmentManager;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -30,7 +29,11 @@ import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
-import com.nexus.igallery.database.PhotoData;
+import com.nexus.igallery.R;
+import com.nexus.igallery.models.ImageElement;
+import com.nexus.igallery.common.MultiDrawable;
+import com.nexus.igallery.models.PhotoData;
+import com.nexus.igallery.viewModels.MyViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

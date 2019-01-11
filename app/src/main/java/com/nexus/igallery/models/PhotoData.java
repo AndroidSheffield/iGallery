@@ -1,10 +1,12 @@
-package com.nexus.igallery.database;
+package com.nexus.igallery.models;
 
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
+
+import com.nexus.igallery.database.DateConverter;
 
 import java.util.Date;
 

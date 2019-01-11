@@ -1,46 +1,37 @@
-package com.nexus.igallery;
+package com.nexus.igallery.views;
 
-
-import android.Manifest;
-import android.annotation.TargetApi;
 
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-
 import android.media.ExifInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
-
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.nexus.igallery.database.PhotoData;
+import com.nexus.igallery.R;
+import com.nexus.igallery.models.PhotoData;
+import com.nexus.igallery.viewModels.MyViewModel;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,22 +44,19 @@ import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static com.nexus.igallery.commonMethod.getAllPhotos;
+import static com.nexus.igallery.common.commonMethod.getAllPhotos;
+import static com.nexus.igallery.common.commonMethod.initEasyImage;
+import static com.nexus.igallery.common.permissions.checkPermissions;
+import static com.nexus.igallery.common.permissions.requestPermission;
 
 public class MainActivity extends AppCompatActivity implements MyDialogFragment.MDFListener {
 
-    static final int REQUEST_READ_EXTERNAL_STORAGE = 2987;
-    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 7829;
-    private static final String PHOTOS_KEY = "easy_image_photos_list";
     private List<PhotoData> myPictureList = new ArrayList<>();
     private RecyclerView.Adapter mAdapter;
     private RecyclerView mRecyclerView;
     private FusedLocationProviderClient client;
     private int floatingType = -1;
-    private final int displayMode = 1;
     private Activity activity;
-
     private MyViewModel myViewModel;
 
 
@@ -81,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
         setSupportActionBar(toolbar);
 
 
-        requestPermissions();
+        requestPermission(this);
         client = LocationServices.getFusedLocationProviderClient(this);
 
 
@@ -107,9 +95,9 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
         });
 
         // required by Android 6.0 +
-        checkPermissions(getApplicationContext());
+        checkPermissions(getApplicationContext(), this);
 
-        initEasyImage();
+        initEasyImage(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_camera);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -129,79 +117,6 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
             }
         });
     }
-
-    private void initEasyImage() {
-        EasyImage.configuration(this)
-                .setImagesFolderName("iGallery")
-                .setCopyTakenPhotosToPublicGalleryAppFolder(false)
-                .setCopyPickedImagesToPublicGalleryAppFolder(false)
-                .setAllowMultiplePickInGallery(true);
-    }
-
-    private void initData() {
-
-        myPictureList = myViewModel.getAllPhotoDataToDisplay();
-    }
-
-    private void requestPermissions() {
-        ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, 1);
-    }
-
-    private void checkPermissions(final Context context) {
-        int currentAPIVersion = Build.VERSION.SDK_INT;
-        if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    android.support.v7.app.AlertDialog.Builder alertBuilder = new android.support.v7.app.AlertDialog.Builder(context);
-                    alertBuilder.setCancelable(true);
-                    alertBuilder.setTitle("Permission necessary");
-                    alertBuilder.setMessage("External storage permission is necessary");
-                    alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE);
-                        }
-                    });
-                    android.support.v7.app.AlertDialog alert = alertBuilder.create();
-                    alert.show();
-
-                } else {
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE);
-                }
-
-            }
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    android.support.v7.app.AlertDialog.Builder alertBuilder = new android.support.v7.app.AlertDialog.Builder(context);
-                    alertBuilder.setCancelable(true);
-                    alertBuilder.setTitle("Permission necessary");
-                    alertBuilder.setMessage("Writing external storage permission is necessary");
-                    alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE);
-                        }
-                    });
-                    android.support.v7.app.AlertDialog alert = alertBuilder.create();
-                    alert.show();
-
-                } else {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE);
-                }
-
-            }
-
-
-        }
-        if (ActivityCompat.checkSelfPermission(MainActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-            requestPermissions();
-        }
-        if (ActivityCompat.checkSelfPermission(activity, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE);
-
-        }
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -311,8 +226,6 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
     }
 
 
-
-
     /**
      * add to the grid
      * @param returnedPhotos
@@ -320,16 +233,17 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
     private void onPhotosReturned(final List<File> returnedPhotos) {
         if (floatingType == 1) {
             if (ActivityCompat.checkSelfPermission(MainActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-                requestPermissions();
+                requestPermission(this);
 
             }
             client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
                     if (location != null) {
-                        ImageElement temp = new ImageElement(returnedPhotos.get(0), location.getLatitude(), location.getLongitude(), Calendar.getInstance().getTime());
-                        myViewModel.storePhoto(temp);
-                        myPictureList.add(new PhotoData(temp.file.getAbsolutePath(), temp.lat, temp.lon, temp.date, temp.date));
+                        Date date = Calendar.getInstance().getTime();
+                        PhotoData photoData = new PhotoData(returnedPhotos.get(0).getAbsolutePath(), location.getLatitude(), location.getLongitude(), date, date);
+                        myViewModel.storePhoto(photoData);
+                        myPictureList.add(photoData);
                         mAdapter.notifyDataSetChanged();
                         mRecyclerView.scrollToPosition(returnedPhotos.size() - 1);
                     }
@@ -341,9 +255,7 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
         }
         else {
 
-
-            myPictureList.addAll(getImageElements(returnedPhotos));
-
+            myPictureList.addAll(getPhotoDatas(returnedPhotos));
             mAdapter.notifyDataSetChanged();
             mRecyclerView.scrollToPosition(returnedPhotos.size() - 1);
 
@@ -358,40 +270,47 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
      * @param returnedPhotos
      * @return
      */
-    private List<PhotoData> getImageElements(List<File> returnedPhotos) {
-        List<PhotoData> imageElementList= new ArrayList<>();
+    private List<PhotoData> getPhotoDatas(List<File> returnedPhotos) {
+        List<PhotoData> photoDataList= new ArrayList<>();
+        int duplicatedPhoto = 0;
+        int compared = 0;
         for (File file: returnedPhotos){
             ExifInterface exif = null;
+
             try {
                 exif = new ExifInterface(file.getAbsolutePath());
-
+                Date date = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(exif.getAttribute(ExifInterface.TAG_DATETIME));
+                for (PhotoData photoData : myPictureList) {
+                    if (photoData.getCreateDate().equals(date)) {
+                        duplicatedPhoto++;
+                        break;
+                    }
+                }
+                if (compared < duplicatedPhoto) {
+                    compared++;
+                    continue;
+                }
                 float[] location = new float[2];
                 exif.getLatLong(location);
-                try {
-                    Date date = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(exif.getAttribute(ExifInterface.TAG_DATETIME));
 
-                    ImageElement temp = new ImageElement(file, Double.valueOf(location[0]), Double.valueOf(location[1]), date);
-                    myViewModel.storePhoto(temp);
-                    PhotoData element= new PhotoData(file.getAbsolutePath(), temp.lat, temp.lon, temp.date, temp.date);
-                    imageElementList.add(element);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                // exif Datetime need to be used
-
+                PhotoData element= new PhotoData(file.getAbsolutePath(), Double.valueOf(location[0]), Double.valueOf(location[1]), date, date);
+                myViewModel.storePhoto(element);
+                photoDataList.add(element);
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
 
-
-
         }
-        return imageElementList;
+
+        if (duplicatedPhoto > 0) {
+            Toast.makeText(this, duplicatedPhoto + " duplicated photos", Toast.LENGTH_SHORT).show();
+        }
+
+        return photoDataList;
     }
 
-    public Activity getActivity() {
-        return activity;
-    }
 
 
     @Override
@@ -434,11 +353,21 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
     @Override
     public void getDataFromDialog(int message) {
         if (message == 1) {
-            myPictureList.addAll(getAllPhotos(getActivity(), myViewModel, myPictureList, REQUEST_READ_EXTERNAL_STORAGE));
+            myPictureList.addAll(getAllPhotos(getActivity(), myViewModel, myPictureList));
             mAdapter.notifyDataSetChanged();
             mAdapter = new MyAdapter(myPictureList);
             mRecyclerView.setAdapter(mAdapter);
         }
     }
+
+    private void initData() {
+
+        myPictureList = myViewModel.getAllPhotoDataToDisplay();
+    }
+
+    public Activity getActivity() {
+        return activity;
+    }
+
 }
 

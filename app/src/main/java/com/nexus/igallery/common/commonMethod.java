@@ -1,18 +1,14 @@
-package com.nexus.igallery;
+package com.nexus.igallery.common;
 
-import android.Manifest;
 import android.app.Activity;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 
-import com.nexus.igallery.database.PhotoData;
+import com.nexus.igallery.models.PhotoData;
+import com.nexus.igallery.viewModels.MyViewModel;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,12 +16,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import pl.aprilapps.easyphotopicker.EasyImage;
 
 
 public class commonMethod {
 
-    public static List<PhotoData> getAllPhotos(Activity activity, MyViewModel myViewModel, List<PhotoData> myPictureList, int request) {
+    public static List<PhotoData> getAllPhotos(Activity activity, MyViewModel myViewModel, List<PhotoData> myPictureList) {
+
 
 
         List<PhotoData> photoDataList = new ArrayList<>();
@@ -47,7 +44,7 @@ public class commonMethod {
                     if (myPictureList.size() == 0) {
                         float[] location = new float[2];
                         exif.getLatLong(location);
-                        myViewModel.storePhoto(new ImageElement(new File(path), Double.valueOf(location[0]), Double.valueOf(location[1]), date));
+                        myViewModel.storePhoto(new PhotoData(path, Double.valueOf(location[0]), Double.valueOf(location[1]), date, date));
                         photoDataList.add(new PhotoData(path, Double.valueOf(location[0]), Double.valueOf(location[1]), date, date));
                     }
                     else {
@@ -61,7 +58,7 @@ public class commonMethod {
                             else {
                                 float[] location = new float[2];
                                 exif.getLatLong(location);
-                                myViewModel.storePhoto(new ImageElement(new File(path), Double.valueOf(location[0]), Double.valueOf(location[1]), date));
+                                myViewModel.storePhoto(new PhotoData(path, Double.valueOf(location[0]), Double.valueOf(location[1]), date, date));
                                 photoDataList.add(new PhotoData(path, Double.valueOf(location[0]), Double.valueOf(location[1]), date, date));
                             }
                         }
@@ -81,4 +78,15 @@ public class commonMethod {
 
         return photoDataList;
     }
+
+    public static void initEasyImage(Activity activity) {
+        EasyImage.configuration(activity)
+                .setImagesFolderName("iGallery")
+                .setCopyTakenPhotosToPublicGalleryAppFolder(false)
+                .setCopyPickedImagesToPublicGalleryAppFolder(false)
+                .setAllowMultiplePickInGallery(true);
+    }
+
+
+
 }

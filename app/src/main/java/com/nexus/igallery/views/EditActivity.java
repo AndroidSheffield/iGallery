@@ -1,4 +1,4 @@
-package com.nexus.igallery;
+package com.nexus.igallery.views;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -8,11 +8,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 
-import com.nexus.igallery.database.PhotoData;
+import com.nexus.igallery.R;
+import com.nexus.igallery.models.PhotoData;
+import com.nexus.igallery.viewModels.MyViewModel;
 
-import java.io.File;
 import java.util.Date;
 
 public class EditActivity extends AppCompatActivity {

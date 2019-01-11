@@ -2,7 +2,7 @@
  * Copyright (c) 2017. This code has been developed by Fabio Ciravegna, The University of Sheffield. All rights reserved. No part of this code can be used without the explicit written permission by the author
  */
 
-package com.nexus.igallery;
+package com.nexus.igallery.views;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,7 +21,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.nexus.igallery.database.PhotoData;
+import com.nexus.igallery.R;
+import com.nexus.igallery.models.PhotoData;
 
 import java.util.Date;
 
@@ -122,7 +123,7 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
-
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 10001 && resultCode == RESULT_OK) {

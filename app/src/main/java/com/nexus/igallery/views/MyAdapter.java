@@ -2,7 +2,7 @@
  * Copyright (c) 2017. This code has been developed by Fabio Ciravegna, The University of Sheffield. All rights reserved. No part of this code can be used without the explicit written permission by the author
  */
 
-package com.nexus.igallery;
+package com.nexus.igallery.views;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,11 +15,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nexus.igallery.database.PhotoData;
+import com.nexus.igallery.R;
+import com.nexus.igallery.models.PhotoData;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 

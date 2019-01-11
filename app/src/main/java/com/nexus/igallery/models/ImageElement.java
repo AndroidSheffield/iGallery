@@ -2,26 +2,23 @@
  * Copyright (c) 2017. This code has been developed by Fabio Ciravegna, The University of Sheffield. All rights reserved. No part of this code can be used without the explicit written permission by the author
  */
 
-package com.nexus.igallery;
-
-import android.location.Location;
+package com.nexus.igallery.models;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
-import com.nexus.igallery.database.PhotoData;
+import com.nexus.igallery.models.PhotoData;
 
 import java.io.File;
 import java.util.Date;
 
-class ImageElement implements ClusterItem {
-    int image=-1;
-    File file=null;
-    double lat;
-    double lon;
-    Date date;
-    String title;
-    String description;
-    PhotoData photoData;
+public class ImageElement implements ClusterItem {
+    public File file=null;
+    public double lat;
+    public double lon;
+    public Date date;
+    public String title;
+    public String description;
+    public PhotoData photoData;
     private final LatLng mPosition;
 
 

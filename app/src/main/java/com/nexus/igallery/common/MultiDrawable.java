@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.nexus.igallery;
+package com.nexus.igallery.common;
 
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;

@@ -1,4 +1,4 @@
-package com.nexus.igallery;
+package com.nexus.igallery.viewModels;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
@@ -8,15 +8,11 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 
+import com.nexus.igallery.models.ImageElement;
 import com.nexus.igallery.database.MyDAO;
 import com.nexus.igallery.database.MyRoomDatabase;
-import com.nexus.igallery.database.PhotoData;
+import com.nexus.igallery.models.PhotoData;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -71,8 +67,8 @@ public class MyRepository extends ViewModel {
 
 
 
-    public void storePhoto(ImageElement imageElement) {
-        new insertAsyncTask(mDBDao).execute(new PhotoData(String.valueOf(imageElement.file), imageElement.lat, imageElement.lon, imageElement.date, imageElement.date));
+    public void storePhoto(PhotoData photoData) {
+        new insertAsyncTask(mDBDao).execute(photoData);
     }
 
     private static class retrieveAsyncTask extends AsyncTask<PhotoData, Void, List<PhotoData>> {
