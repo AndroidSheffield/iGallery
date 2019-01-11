@@ -326,7 +326,11 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
             case R.id.search_photo:
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivityForResult(intent, 10086);
-
+                return true;
+            case R.id.refresh:
+                initData();
+                mAdapter = new MyAdapter(myPictureList);
+                mRecyclerView.setAdapter(mAdapter);
                 return true;
             case R.id.synchronize:
                 MyDialogFragment sync = new MyDialogFragment().newInstance("Synchronize", "Are you sure to sync all photos from local gallery?", "1");
@@ -336,9 +340,7 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
             case R.id.display_map:
                 Intent mapView =  new Intent(MainActivity.this, GalleryMapActivity.class);
                 startActivity(mapView);
-
                 return true;
-
             case android.R.id.home:
                 finish();
                 return true;
