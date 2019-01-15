@@ -25,20 +25,19 @@ import com.nexus.igallery.R;
 import com.nexus.igallery.models.PhotoData;
 
 import java.util.Date;
+import java.util.Map;
 
 
 public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     /**
-     * Locations of photos
-     * add the text view of input information of title and description
-     * get a PhotoData named element
+     * googleLatLng is used to save the locations of photos. It includes both longitude and latitude.
+     * title and description are used to store description of photos.
+     * element is used to cross data from the Class PhotoData.java
      */
     private LatLng googleLatLng;
     private TextView title, description;
     private PhotoData element;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +45,7 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
         setContentView(R.layout.activity_message2);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // Instantiate this module using for Google Map
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -59,7 +59,7 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
 
                 element= MyAdapter.getItems().get(position);
 
-                googleLatLng = new LatLng(element.getLat(),element.getLon());
+                googleLatLng = new LatLng(element.getLat(),element.getLon());// Get longitude and latitude of photos
 
                 title = findViewById(R.id.info_title);
                 title.setText(element.getTitle());
@@ -95,7 +95,13 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
-    //Open location in the external Google Map
+    /**
+     * Open location in the external Google Map.
+     * This method is related to the button "button1".
+     * The position is conveyed from PhotoData Class to locationUri.
+     * It must be modified to a particular format in locationintent,
+     * and then use Intent to send it to the API.
+     */
     public void myClick(View v){
         Bundle b = getIntent().getExtras();
         int position=-1;
@@ -104,9 +110,8 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
             if (position!=-1){
                 PhotoData element= MyAdapter.getItems().get(position);
 
-                //Send location to API
-                Uri locationUri = Uri.parse("geo:" + element.getLat() + "," + element.getLon());
-                Intent locationintent = new Intent(Intent.ACTION_VIEW, locationUri);
+                Uri locationUri = Uri.parse("geo:" + element.getLat() + "," + element.getLon());// A string of particular format use for the API
+                Intent locationintent = new Intent(Intent.ACTION_VIEW, locationUri);// Send location to API
                 locationintent.setPackage("com.google.android.apps.maps");
                 //context.startActivity(locationintent);
                 startActivity(locationintent);
@@ -114,7 +119,12 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
-    //Open location in the internal Google Map
+    /**
+     * Open location in the internal Google Map.
+     * Get location firstly, and then appear location and title in the map.
+     * The camera must be moced to the location of photo, or it will always show the initial position.
+     * Reference, Google Map developers document: https://developers.google.com/maps/documentation/android-sdk/intro
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
