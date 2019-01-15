@@ -24,6 +24,9 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         myViewModel = ViewModelProviders.of(this).get(MyViewModel.class);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        /**
+         * to add the actionbar and view model
+         */
 
 
         setContentView(R.layout.activity_edit);
@@ -37,24 +40,36 @@ public class EditActivity extends AppCompatActivity {
                 element = MyAdapter.getItems().get(position);
                 Button btn = findViewById(R.id.btn_save);
                 final int finalPosition = position;
-                btn.setOnClickListener(new View.OnClickListener() {  //为按钮添加单击监听事件
+                btn.setOnClickListener(new View.OnClickListener() {
+                    /**
+                     * get a monitor for the button
+                     * @param v
+                     */
                     @Override
 
                     public void onClick(View v) {
-                        //tittle
+                        /**
+                         * title and description
+                         * add a find view by id to defining the text view
+                         */
                         String title= ((EditText) findViewById(R.id.edit_title)).getText().toString();
-                        //description
                         String description = ((EditText) findViewById(R.id.edit_description)).getText().toString();
 
                         element.setTitle(title);
                         element.setDescription(description);
                         element.setUpdateDate(new Date());
                         myViewModel.updatePhoto(element);
+                        /**
+                         * using the update method by database system
+                         */
                         Intent intent = new Intent();
                         intent.putExtra("title", title);
                         intent.putExtra("description", description);
                         intent.putExtra("new_date", element.getUpdateDate());
                         intent.putExtra("position", finalPosition);
+                        /**
+                         * using the "putExtra" method to update and edit the data of picture
+                         */
                         setResult(RESULT_OK, intent);
                         finish();
 

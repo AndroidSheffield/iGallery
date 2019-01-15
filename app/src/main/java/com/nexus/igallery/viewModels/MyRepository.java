@@ -3,12 +3,9 @@ package com.nexus.igallery.viewModels;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
-
 import android.os.AsyncTask;
 import android.util.Log;
 
-
-import com.nexus.igallery.models.ImageElement;
 import com.nexus.igallery.database.MyDAO;
 import com.nexus.igallery.database.MyRoomDatabase;
 import com.nexus.igallery.models.PhotoData;

@@ -29,10 +29,15 @@ import java.util.Date;
 
 public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    //Locations of photos
+    /**
+     * Locations of photos
+     * add the text view of input information of title and description
+     * get a PhotoData named element
+     */
     private LatLng googleLatLng;
     private TextView title, description;
     private PhotoData element;
+
 
 
     @Override
@@ -70,10 +75,17 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
         }
 
         Button btn = findViewById(R.id.buttonEdit);
+        /**
+         * the button to realized the edit function
+         */
         final int finalPosition = position;
         btn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(ShowImageActivity.this, EditActivity.class);
+                /**
+                 * using the monitor to open a new activity "EditActivity"
+                 * to edit the metadata of picture
+                 */
                 intent.putExtra("position", finalPosition);
                 startActivityForResult(intent, 10001);
 
