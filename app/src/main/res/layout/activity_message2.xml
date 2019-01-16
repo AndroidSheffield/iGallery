@@ -64,7 +64,7 @@
 
     <!--This button connected to the external map-->
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/button_map"
         android:layout_width="120dip"
         android:layout_height="60dip"
         android:layout_margin="5dip"

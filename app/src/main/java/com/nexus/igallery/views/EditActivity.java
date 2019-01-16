@@ -15,23 +15,27 @@ import com.nexus.igallery.viewModels.MyViewModel;
 
 import java.util.Date;
 
+
+/**
+ * This class aim to realized the function of edit the metadata from database
+ * The using permission has been allocated by Prof.Fabio
+ * @author Jiachen Yang
+ * @since iGallery version 1.0
+ */
 public class EditActivity extends AppCompatActivity {
     private MyViewModel myViewModel;
     private PhotoData element;
-
+    /**
+     * a Edit interface of app, allows the user to edit the
+     * metadata of the photo
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myViewModel = ViewModelProviders.of(this).get(MyViewModel.class);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        /**
-         * to add the actionbar and view model
-         */
-
-
         setContentView(R.layout.activity_edit);
-
-
         Bundle b = getIntent().getExtras();
         int position=-1;
         if(b !=null) {
@@ -50,6 +54,7 @@ public class EditActivity extends AppCompatActivity {
                         /**
                          * title and description
                          * add a find view by id to defining the text view
+                         * @since iGallery version 1.0
                          */
                         String title= ((EditText) findViewById(R.id.edit_title)).getText().toString();
                         String description = ((EditText) findViewById(R.id.edit_description)).getText().toString();
@@ -68,6 +73,7 @@ public class EditActivity extends AppCompatActivity {
                         intent.putExtra("position", finalPosition);
                         /**
                          * using the "putExtra" method to update and edit the data of picture
+                         * @since iGallery version 1.0
                          */
                         setResult(RESULT_OK, intent);
                         finish();
@@ -77,7 +83,12 @@ public class EditActivity extends AppCompatActivity {
             }
         }
     }
-
+    /**
+     * set an icon before title at toolbar which allow going back to the previous page
+     * @param item menu elements
+     * @return true
+     * @since iGallery version 1.0
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
