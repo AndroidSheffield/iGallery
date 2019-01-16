@@ -27,7 +27,9 @@ import java.util.Map;
  * This class aim to realized the function of showing the image for a grid
  * and it can be used to acquire map function and edit function.
  * The using permission has been allocated by Prof.Fabio
- * @author Ruocheng Ma and Jiachen Yang
+ * @author Ruocheng Ma
+ * @author Jiachen Yang
+ * @author Jingbo Lin
  * @since iGallery version 1.0
  */
 public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -161,7 +163,6 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
      * @param data the data
      * @since iGallery version 1.0
      */
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
