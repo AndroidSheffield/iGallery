@@ -94,7 +94,7 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
 
     /**
      * Open location in the external Google Map.
-     * This method is related to the button "button1".
+     * This method is related to the button "button_map".
      * The position is conveyed from PhotoData Class to locationUri.
      * It must be modified to a particular format in locationintent,
      * and then use Intent to send it to the API.
@@ -146,6 +146,17 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
+
+    /**
+     * output the information of photo
+     * include the "title" and "description"
+     * provide the button to edit the metadata about the photo
+     * @param requestCode request the data
+     * @param resultCode get the result code
+     * @param data the data
+     * @since iGallery version 1.0
+     */
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -155,11 +166,18 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
             element.setTitle(String.valueOf(bundle.get("title")));
             element.setDescription(String.valueOf(bundle.get("description")));
             title.setText(element.getTitle());
+            //using the database management to get information of title
             description.setText(element.getDescription());
+            //using the database management to get information of description
             MyAdapter.changeItem((int) bundle.get("position"), element);
         }
     }
-
+    /**
+     * set an icon before title at toolbar which allow going back to the previous page
+     * @param item menu elements
+     * @return true
+     * @since iGallery version 1.0
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
