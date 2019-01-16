@@ -23,13 +23,24 @@ import com.nexus.igallery.models.PhotoData;
 import java.util.Date;
 import java.util.Map;
 
-
+/**
+ * This class aim to realized the function of showing the image for a grid
+ * and it can be used to acquire map function and edit function.
+ * The using permission has been allocated by Prof.Fabio
+ * @author Ruocheng Ma and Jiachen Yang
+ * @since iGallery version 1.0
+ */
 public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private LatLng googleLatLng;
     private TextView title, description;
     private PhotoData element;
 
+    /**
+     * the method be called when open the app
+     * @param savedInstanceState application current state
+     * @since iGallery version 1.0
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
