@@ -41,7 +41,6 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
     implementation 'com.google.android.gms:play-services-location:16.+'
 
-    // 地图操作工具类，包含添加标记等功能
     // Some functions in Google Map, like adding markers
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
 }

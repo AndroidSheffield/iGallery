@@ -78,9 +78,11 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        activity = this;
 
 
-        requestPermission(this);
+        // required by Android 6.0 +
+        checkPermissions(getApplicationContext(), this);
         client = LocationServices.getFusedLocationProviderClient(this);
 
 
@@ -88,7 +90,9 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
 
 
         initData();
-        activity = this;
+
+
+        initEasyImage(this);
 
         int numberOfColumns = 4;
         mRecyclerView = (RecyclerView) findViewById(R.id.grid_recycler_view);
@@ -107,15 +111,13 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
             }
         });
 
-        // required by Android 6.0 +
-        checkPermissions(getApplicationContext(), this);
 
-        initEasyImage(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_camera);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 floatingType = 1;
                 EasyImage.openCameraForImage(getActivity(), 0);
             }
@@ -125,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
         fabGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 floatingType = 0;
                 EasyImage.openGallery(getActivity(), 0);
             }
@@ -365,6 +368,8 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
                 mRecyclerView.setAdapter(mAdapter);
                 return true;
             case R.id.synchronize:
+                // required by Android 6.0 +
+                checkPermissions(getApplicationContext(), this);
                 MyDialogFragment sync = new MyDialogFragment().newInstance("Synchronize", "Are you sure to sync all photos from local gallery?", "1");
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 sync.show(fragmentManager, "fragment_sync");

@@ -38,6 +38,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.View_Holder> {
     /**
      * constructor
      * @param items a list of PhotoData instance
+     * @see MainActivity
      * @since iGallery version 1.0
      */
     public MyAdapter(List<PhotoData> items) {
@@ -153,6 +154,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.View_Holder> {
     /**
      * getter of items
      * @return a list of PhotoData intance
+     * @see EditActivity
+     * @see ShowImageActivity
+     * @see GalleryMapActivity
      * @since iGallery version 1.0
      */
     public static List<PhotoData> getItems() {
@@ -163,6 +167,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.View_Holder> {
      * change the specific items after updating
      * @param index the index of photo data in items list
      * @param photoData a PhotoData intance which will replace the old one
+     * @see ShowImageActivity
      * @since iGallery version 1.0
      */
     public static void changeItem(int index, PhotoData photoData) {

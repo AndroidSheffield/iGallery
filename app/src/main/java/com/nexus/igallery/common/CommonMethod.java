@@ -67,19 +67,18 @@ public class CommonMethod {
                         photoDataList.add(new PhotoData(path, Double.valueOf(location[0]), Double.valueOf(location[1]), date, date));
                     }
                     else { // if no, only store the photo which is unavailable for database
+                        int isDuplicated = 0;
                         for (PhotoData temp : currentList) {
-                            if (temp.getPhotoPath().equals(path)) {
+                            if (temp.getPhotoPath().equals(path) || date.equals(temp.getCreateDate())) {
+                                isDuplicated = 1;
                                 break;
                             }
-                            else if (date.equals(temp.getCreateDate())) {
-                                break;
-                            }
-                            else {
-                                float[] location = new float[2];
-                                exif.getLatLong(location);
-                                myViewModel.storePhoto(new PhotoData(path, Double.valueOf(location[0]), Double.valueOf(location[1]), date, date));
-                                photoDataList.add(new PhotoData(path, Double.valueOf(location[0]), Double.valueOf(location[1]), date, date));
-                            }
+                        }
+                        if (isDuplicated == 0) {
+                            float[] location = new float[2];
+                            exif.getLatLong(location);
+                            myViewModel.storePhoto(new PhotoData(path, Double.valueOf(location[0]), Double.valueOf(location[1]), date, date));
+                            photoDataList.add(new PhotoData(path, Double.valueOf(location[0]), Double.valueOf(location[1]), date, date));
                         }
                     }
 
