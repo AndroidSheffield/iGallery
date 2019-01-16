@@ -26,12 +26,14 @@
             android:clickable="true"
             android:focusable="false"
             android:hint="@string/hint_startDate" />
+        <!--actionBar and begin the linear layout-->
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/search_layout_endDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <!--a layout decorate tool-->
         <EditText
             android:id="@+id/search_endDate"
             android:layout_width="match_parent"
@@ -40,18 +42,21 @@
             android:clickable="true"
             android:focusable="false"
             android:hint="@string/hint_endDate" />
+        <!--This edit text provide the function of input Date-->
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/search_layout_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <!--a layout decorate tool-->
         <EditText
             android:id="@+id/search_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:hint="@string/hint_title" />
+        <!--This edit text provide the function of input title-->
     </android.support.design.widget.TextInputLayout>
 
 
@@ -59,12 +64,14 @@
         android:id="@+id/search_layout_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <!--a layout decorate tool-->
         <EditText
             android:id="@+id/search_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:hint="@string/hint_description" />
+        <!--This edit text provide the function of input description-->
     </android.support.design.widget.TextInputLayout>
 
     <Button android:id="@+id/btn_search"
@@ -74,6 +81,7 @@
         android:background="@color/colorPrimary"
         android:layout_marginTop="40dp"
         android:textColor="@android:color/white"/>
+        <!--This button aim to submit the data to search-->
     </LinearLayout>
 
 

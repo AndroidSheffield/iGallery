@@ -14,7 +14,7 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 /**
  * The Permissions class aim to control the permission of app.
  * iGallery app need Location permission, read and write external storage permission of the phone.
- * @author Jingbo Lin
+ * @author Jingbo Lin, Ruocheng Ma
  * @see com.nexus.igallery.views.MainActivity
  * @since iGallery version 1.0
  */

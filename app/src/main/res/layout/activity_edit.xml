@@ -15,10 +15,13 @@
         android:paddingRight="20dp"
         android:paddingTop="60dp">
 
+        <!--actionBar and begin the linear layout-->
+
         <android.support.design.widget.TextInputLayout
             android:id="@+id/search_layout_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <!--a layout decorate tool-->
 
             <EditText
                 android:id="@+id/edit_title"
@@ -26,6 +29,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_title"
                 android:singleLine="true" />
+
+            <!--This edit text provide the function of edit title-->
         </android.support.design.widget.TextInputLayout>
 
 
@@ -33,6 +38,7 @@
             android:id="@+id/search_layout_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <!--a layout decorate tool-->
 
             <EditText
                 android:id="@+id/edit_description"
@@ -40,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_description"
                 android:singleLine="true" />
+            <!--This edit text provide the function of edit description-->
         </android.support.design.widget.TextInputLayout>
 
         <Button
@@ -50,6 +57,7 @@
             android:background="@color/colorPrimary"
             android:text="save"
             android:textColor="@android:color/white" />
+        <!--This button aim to save the data-->
     </LinearLayout>
 
 
