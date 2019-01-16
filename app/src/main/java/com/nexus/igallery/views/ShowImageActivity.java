@@ -1,10 +1,12 @@
 package com.nexus.igallery.views;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,9 +21,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.nexus.igallery.R;
 import com.nexus.igallery.models.PhotoData;
+import com.nexus.igallery.viewModels.MyViewModel;
 
 import java.util.Date;
-import java.util.Map;
 
 /**
  * This class aim to realized the function of showing the image for a grid
@@ -32,11 +34,12 @@ import java.util.Map;
  * @author Jingbo Lin
  * @since iGallery version 1.0
  */
-public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCallback {
-
+public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCallback, MyDialogFragment.MDFListener {
+    private MyViewModel myViewModel;
     private LatLng googleLatLng;
     private TextView title, description;
     private PhotoData element;
+    private int deletePosition;
 
     /**
      * the method be called when open the app
@@ -46,9 +49,10 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message2);
+        setContentView(R.layout.activity_showimage);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        myViewModel = ViewModelProviders.of(this).get(MyViewModel.class);
         // Instantiate this module using for Google Map
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -78,12 +82,13 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
 
         }
 
-        Button btn = findViewById(R.id.buttonEdit);
+        Button edit = findViewById(R.id.buttonEdit);
+        Button delete = findViewById(R.id.buttonDelete);
         /**
          * the button to realized the edit function
          */
         final int finalPosition = position;
-        btn.setOnClickListener(new View.OnClickListener(){
+        edit.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(ShowImageActivity.this, EditActivity.class);
                 /**
@@ -95,6 +100,17 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
 
             }
 
+        });
+
+        deletePosition = position;
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyDialogFragment sync = new MyDialogFragment().newInstance("Delete", "Are you sure to delete this photos from database?", "2");
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                sync.show(fragmentManager, "fragment_sync");
+
+            }
         });
 
     }
@@ -195,4 +211,17 @@ public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
+    /**
+     * react specific to dialog fragment
+     * @param message int value provided by MyDialogFrament
+     * @since iGallery version 1.0
+     */
+    @Override
+    public void getDataFromDialog(int message) {
+        if (message == 2) {
+            myViewModel.deletePhoto(MyAdapter.getItems().get(deletePosition));
+            MyAdapter.deleteItem(deletePosition);
+            finish();
+        }
+    }
 }

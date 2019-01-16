@@ -57,6 +57,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.View_Holder> {
         context = cont;
     }
 
+
+
     /**
      * initiate a view holder
      * @param parent
@@ -182,5 +184,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.View_Holder> {
      */
     public static void setItems(List<PhotoData> items) {
         MyAdapter.items = items;
+    }
+
+    public static void deleteItem(int deletePosition) {
+        items.remove(deletePosition);
     }
 }

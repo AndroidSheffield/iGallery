@@ -158,19 +158,19 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
                     Date sd = new SimpleDateFormat("yyyy-MM-dd", Locale.UK).parse(startDate);
                     photoData = new PhotoData("",0.0, 0.0, sd, null);
                     if (!title.equals("")) {
-                        if (!data.getStringExtra("description").equals("")) {
-                            photoData.setTitle("%" + data.getStringExtra("title") + "%");
-                            photoData.setDescription("%" + data.getStringExtra("description") + "%");
+                        if (!description.equals("")) {
+                            photoData.setTitle("%" + title + "%");
+                            photoData.setDescription("%" + description + "%");
                         }
                         else {
-                            photoData.setTitle("%" + data.getStringExtra("title") + "%");
+                            photoData.setTitle("%" + title + "%");
                             photoData.setDescription("%");
                         }
 
                     }
                     else if (!description.equals("")) {
                         photoData.setTitle("%");
-                        photoData.setDescription("%" + data.getStringExtra("description") + "%");
+                        photoData.setDescription("%" + description + "%");
                     }
 
                     if (!endDate.equals("")) {
@@ -188,19 +188,19 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
             else {
                 photoData = new PhotoData("",0.0, 0.0, null, null);
                 if (!title.equals("")) {
-                    if (!data.getStringExtra("description").equals("")) {
-                        photoData.setTitle("%" + data.getStringExtra("title") + "%");
-                        photoData.setDescription("%" + data.getStringExtra("description") + "%");
+                    if (!description.equals("")) {
+                        photoData.setTitle("%" + title + "%");
+                        photoData.setDescription("%" + description + "%");
                     }
                     else {
-                        photoData.setTitle("%" + data.getStringExtra("title") + "%");
+                        photoData.setTitle("%" + title + "%");
                         photoData.setDescription("%");
                     }
 
                 }
                 else if (!description.equals("")) {
                     photoData.setTitle("%");
-                    photoData.setDescription("%" + data.getStringExtra("description") + "%");
+                    photoData.setDescription("%" + description + "%");
                 }
                 if (!endDate.equals("")) {
                     try {

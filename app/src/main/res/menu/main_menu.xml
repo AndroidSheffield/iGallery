@@ -35,4 +35,5 @@
         android:orderInCategory="100"
         android:title="Map"
         app:showAsAction="withText" />
+
 </menu>

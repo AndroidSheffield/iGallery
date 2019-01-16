@@ -59,7 +59,9 @@ public class MyDialogFragment extends DialogFragment {
                         // and do the various reaction according to its typw
                         if (((String) getArguments().get("type")).equals("1")) {
                             message = 1;
-
+                        }
+                        if (((String) getArguments().get("type")).equals("2")) {
+                            message = 2;
                         }
                         dialog.dismiss();
                     }

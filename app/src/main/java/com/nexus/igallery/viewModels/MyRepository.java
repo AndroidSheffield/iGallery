@@ -101,6 +101,17 @@ public class MyRepository extends ViewModel {
     }
 
     /**
+     * the method use the async process(deleteAsyncTask) to access database
+     * and delete a new photo data into PhotoData table
+     * @param photoData the photo data which will be deleted
+     * @see MyViewModel
+     * @since iGallery version 1.0
+     */
+    public void deletePhoto(PhotoData photoData) {
+        new deleteAsyncTask(mDBDao).execute(photoData);
+    }
+
+    /**
      * The inner class provide an async process for getPhotoBySearch(PhotoData params) to retrieve data by constraints
      * the input parameter should be PhotoData instance and the return should be List<PhotoData>
      * @author Jingbo Lin
@@ -193,6 +204,34 @@ public class MyRepository extends ViewModel {
             return null;
         }
     }
+
+    /**
+     * The inner class provide an async process for deletePhoto(PhotoData photoData) to delete photo data from database
+     * the input parameter should be PhotoData instance and don't need return
+     * @author Jingbo Lin
+     * @since iGallery version 1.0
+     */
+    private static class deleteAsyncTask extends AsyncTask<PhotoData, Void, Void> {
+        private MyDAO mAsyncTaskDao;
+
+        deleteAsyncTask(MyDAO dao) {
+            mAsyncTaskDao = dao;
+        }
+        /**
+         * the method allow the query to execute
+         * @param params the photo data which will be inserted
+         * @return null
+         * @since iGallery version 1.0
+         */
+        @Override
+        protected Void doInBackground(PhotoData... params) {
+            mAsyncTaskDao.delete(params[0]);
+
+
+            return null;
+        }
+    }
+
 
     /**
      * The inner class provide an async process for updatePhoto(PhotoData photoData) to update specific data of database

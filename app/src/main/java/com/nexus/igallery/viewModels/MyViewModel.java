@@ -103,4 +103,14 @@ public class MyViewModel extends AndroidViewModel {
     public void updatePhoto(PhotoData photoData) {
         mRepository.updatePhoto(photoData);
     }
+
+    /**
+     * support for delete the specific photo data
+     * @param photoData the photo data which will be deleted
+     * @see com.nexus.igallery.views.ShowImageActivity
+     * @since iGallery version 1.0
+     */
+    public void deletePhoto(PhotoData photoData) {
+        mRepository.deletePhoto(photoData);
+    }
 }
