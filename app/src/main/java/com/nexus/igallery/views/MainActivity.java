@@ -44,11 +44,19 @@ import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static com.nexus.igallery.common.commonMethod.getAllPhotos;
-import static com.nexus.igallery.common.commonMethod.initEasyImage;
-import static com.nexus.igallery.common.permissions.checkPermissions;
-import static com.nexus.igallery.common.permissions.requestPermission;
+import static com.nexus.igallery.common.CommonMethod.getAllPhotos;
+import static com.nexus.igallery.common.CommonMethod.initEasyImage;
+import static com.nexus.igallery.common.Permissions.checkPermissions;
+import static com.nexus.igallery.common.Permissions.requestPermission;
 
+/**
+ * The MainActivity extends AppcompatActivity so it provide the interface
+ * which is also the main interface and show the overview of photos.
+ * This class also implements MyDialogFragment.MDFListener which allow activity
+ * do the specific reaction toward the dialog fragment
+ * @author Jingbo Lin
+ * @since iGallery version 1.0
+ */
 public class MainActivity extends AppCompatActivity implements MyDialogFragment.MDFListener {
 
     private List<PhotoData> myPictureList = new ArrayList<>();
@@ -59,8 +67,11 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
     private Activity activity;
     private MyViewModel myViewModel;
 
-
-
+    /**
+     * the method be called when open the app
+     * @param savedInstanceState application current state
+     * @since iGallery version 1.0
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
         mAdapter = new MyAdapter(myPictureList);
         mRecyclerView.setAdapter(mAdapter);
+
+        // observe the live data whenever it change renew the interface
         myViewModel.getPhotoDataToDisplay().observe(this, new Observer<PhotoData>() {
             @Override
             public void onChanged(@Nullable final PhotoData newValue) {
@@ -118,11 +131,18 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
         });
     }
 
+    /**
+     * the method will only be called when activity start a new intent and require result
+     * @param requestCode the int parameter which set and provided by startActivityForResult() method
+     * @param resultCode the int parameter which set and provided by setResult() method
+     * @param data the intent data
+     * @since iGallery version 1.0
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
+        // check if the resultCode and requestCode is correct
         if ((resultCode == Activity.RESULT_OK) && requestCode == 10086) {
             Bundle bundle = data.getExtras();
             PhotoData photoData;
@@ -131,7 +151,6 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
             String title = String.valueOf(bundle.get("title"));
             String description = String.valueOf(bundle.get("description"));
             if (!startDate.equals("")) {
-
                 try {
                     Date sd = new SimpleDateFormat("yyyy-MM-dd", Locale.UK).parse(startDate);
                     photoData = new PhotoData("",0.0, 0.0, sd, null);
@@ -228,7 +247,8 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
 
     /**
      * add to the grid
-     * @param returnedPhotos
+     * @param returnedPhotos a list of selecting photo file or photo file which just was took
+     * @since iGallery version 1.0
      */
     private void onPhotosReturned(final List<File> returnedPhotos) {
         if (floatingType == 1) {
@@ -266,9 +286,10 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
     }
 
     /**
-     * given a list of photos, it creates a list of myElements
-     * @param returnedPhotos
-     * @return
+     * given a list of photos, check if it's duplicated photo and store it into database
+     * @param returnedPhotos a list of selecting photo file or photo file which just was took
+     * @return a list which store PhotoData instance
+     * @since iGallery version 1.0
      */
     private List<PhotoData> getPhotoDatas(List<File> returnedPhotos) {
         List<PhotoData> photoDataList= new ArrayList<>();
@@ -312,7 +333,12 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
     }
 
 
-
+    /**
+     * initiate the menu
+     * @param menu toolbar menu
+     * @return true if there is a xml about menu
+     * @since iGallery version 1.0
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -320,6 +346,12 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * Set the specific action for each menu element
+     * @param item menu elements
+     * @return true
+     * @since iGallery version 1.0
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -352,21 +384,35 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
     }
 
 
+    /**
+     * react specific to dialog fragment
+     * @param message int value provided by MyDialogFrament
+     * @since iGallery version 1.0
+     */
     @Override
     public void getDataFromDialog(int message) {
         if (message == 1) {
-            myPictureList.addAll(getAllPhotos(getActivity(), myViewModel, myPictureList));
+            myPictureList.addAll(getAllPhotos(getActivity(), myViewModel));
             mAdapter.notifyDataSetChanged();
             mAdapter = new MyAdapter(myPictureList);
             mRecyclerView.setAdapter(mAdapter);
         }
     }
 
+    /**
+     * initiate display list
+     * @since iGallery version 1.0
+     */
     private void initData() {
 
         myPictureList = myViewModel.getAllPhotoDataToDisplay();
     }
 
+    /**
+     * getter of Activity
+     * @return current Activity
+     * @since iGallery version 1.0
+     */
     public Activity getActivity() {
         return activity;
     }

@@ -40,14 +40,25 @@ import java.util.List;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
-
+/**
+ * This class learned from demo of Google Maps Android API Utility Library.
+ * The using permission has been allocated by Prof.Fabio
+ * Demonstrates heavy customisation of the look of rendered clusters.
+ * @author Jingbo Lin
+ * @see MainActivity
+ * @since iGallery version 1.0
+ */
 public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCallback, ClusterManager.OnClusterClickListener<ImageElement>, ClusterManager.OnClusterInfoWindowClickListener<ImageElement>, ClusterManager.OnClusterItemClickListener<ImageElement>, ClusterManager.OnClusterItemInfoWindowClickListener<ImageElement> {
     private GoogleMap mMap;
     private ClusterManager<ImageElement> mClusterManager;
     private MyViewModel myViewModel;
     private List<PhotoData> myPictureList = new ArrayList<>();
 
-
+    /**
+     * the method be called when clicking Map button at menu at first time
+     * @param savedInstanceState application current state
+     * @since iGallery version 1.0
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,23 +68,37 @@ public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCa
         setUpMap();
     }
 
+    /**
+     * the method be called when application go back to photos map
+     * @since iGallery version 1.0
+     */
     @Override
     protected void onResume() {
         super.onResume();
         setUpMap();
     }
 
+    /**
+     * initiate the google map
+     * @since iGallery version 1.0
+     */
     private void setUpMap() {
         ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
 
     }
 
+    /**
+     * config the google map
+     * @param googleMap the GoogleMap instance which has specific configuration by developer
+     * @since iGallery version 1.0
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         if (mMap != null) {
             return;
         }
         mMap = googleMap;
+        // request the permission of phone's location
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, 1);
         }
@@ -84,18 +109,23 @@ public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCa
         startMap();
     }
 
+    /**
+     * run the map
+     * @since iGallery version 1.0
+     */
     public void startMap() {
+
+        // if photo data of this app isn't empty, map's beginning location would be the location of first photo
         if (myPictureList.size() != 0) {
             PhotoData photoData = myPictureList.get(0);
             getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(photoData.getLat(), photoData.getLon()), 9.5f));
         }
-        else {
+        else { // otherwise the location would be a specific location
             getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(53.7412, -2.02407), 9.5f));
         }
 
 
-
-
+        // config the map and cluster manager
         mClusterManager = new ClusterManager<ImageElement>(this, getMap());
         mClusterManager.setRenderer(new ImageRenderer());
         getMap().setOnCameraIdleListener(mClusterManager);
@@ -110,6 +140,10 @@ public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCa
         mClusterManager.cluster();
     }
 
+    /**
+     * add items into cluster manager
+     * @since iGallery version 1.0
+     */
     private void addItems() {
         for (PhotoData photoData : myPictureList) {
             mClusterManager.addItem(new ImageElement(photoData));
@@ -117,10 +151,21 @@ public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCa
 
     }
 
+    /**
+     * manipulate the map
+     * @return a GoogleMap instance which is also the attribute of class
+     * @since iGallery version 1.0
+     */
     public GoogleMap getMap() {
         return mMap;
     }
 
+    /**
+     * the method will call when user click an cluster
+     * @param cluster a cluster which store InmageElement instance
+     * @return true
+     * @since iGallery version 1.0
+     */
     @Override
     public boolean onClusterClick(Cluster<ImageElement> cluster) {
         String firstName = cluster.getItems().iterator().next().photoData.getTitle();
@@ -158,15 +203,23 @@ public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCa
         return false;
     }
 
+    /**
+     * the method will call when user click an image on the map
+     * and show the title and description of image
+     * @param imageElement a specific image instance
+     * @since iGallery version 1.0
+     */
     @Override
     public void onClusterItemInfoWindowClick(ImageElement imageElement) {
         int position = -1;
         for (PhotoData photoData : MyAdapter.getItems()) {
+            // find out the photo data index in the MyAdapter item list
             if (imageElement.photoData.getPhotoPath().equals(photoData.getPhotoPath())) {
                 position = MyAdapter.getItems().indexOf(photoData);
                 break;
             }
         }
+        // when click the the specific window of image would jump to show imgae interface
         if (position != -1) {
             Intent intent = new Intent(this, ShowImageActivity.class);
             intent.putExtra("position", position);
@@ -175,6 +228,11 @@ public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCa
 
     }
 
+    /**
+     * Draws profile photos inside markers (using IconGenerator).
+     * When there are multiple people in the cluster, draw multiple photos (using MultiDrawable).
+     * @since iGallery version 1.0
+     */
     private class ImageRenderer extends DefaultClusterRenderer<ImageElement> {
         private final IconGenerator mIconGenerator = new IconGenerator(getApplicationContext());
         private final IconGenerator mClusterIconGenerator = new IconGenerator(getApplicationContext());
@@ -196,6 +254,12 @@ public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCa
             mIconGenerator.setContentView(mImageView);
         }
 
+        /**
+         * define the specific window of image
+         * @param image the item which will have window and should be ImageElement type
+         * @param markerOptions marker of map
+         * @since iGallery version 1.0
+         */
         @Override
         protected void onBeforeClusterItemRendered(ImageElement image, MarkerOptions markerOptions) {
             // Draw a single person.
@@ -207,6 +271,12 @@ public class GalleryMapActivity extends FragmentActivity implements OnMapReadyCa
 
         }
 
+        /**
+         * define the window for cluster
+         * @param cluster the cluster of close photos
+         * @param markerOptions marker of map
+         * @since iGallery version 1.0
+         */
         @Override
         protected void onBeforeClusterRendered(Cluster<ImageElement> cluster, MarkerOptions markerOptions) {
             // Draw multiple people.

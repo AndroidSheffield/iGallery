@@ -46,7 +46,6 @@ public class EditActivity extends AppCompatActivity {
                      * @param v
                      */
                     @Override
-
                     public void onClick(View v) {
                         /**
                          * title and description

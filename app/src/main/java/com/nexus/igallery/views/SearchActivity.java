@@ -11,13 +11,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-
 import com.nexus.igallery.R;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+/**
+ * A searching interface for iGallery app
+ * which allow user search the photo data base on its create date, title and description
+ * @author Jingbo Lin
+ * @see MainActivity
+ * @since iGallery version 1.0
+ */
 public class SearchActivity extends AppCompatActivity {
 
     private EditText searchStartDate, searchEndDate, searchTitle, searchDescription;
@@ -27,7 +32,11 @@ public class SearchActivity extends AppCompatActivity {
     final Calendar searchStartCalendar = Calendar.getInstance();
     final Calendar searchEndCalendar = Calendar.getInstance();
 
-
+    /**
+     * the method will be called when clicking the search icon at the menu
+     * @param savedInstanceState application current state
+     * @since iGallery version 1.0
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +56,7 @@ public class SearchActivity extends AppCompatActivity {
 
         search = findViewById(R.id.btn_search);
 
+        // define start date DatePicker
         final DatePickerDialog.OnDateSetListener startDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -57,6 +67,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         };
 
+        // start date listener when clicking it will call the startDate DatePickerDialog
         searchStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +79,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        // define end date DatePicker
         final DatePickerDialog.OnDateSetListener endDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -78,6 +90,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         };
 
+        // end date listener when clicking it will call the endDate DatePickerDialog
         searchEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +102,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        // search button listener when clicking will send the intent data to MainActivity
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,6 +119,10 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * update the input area of start date
+     * @since iGallery version 1.0
+     */
     private void updateStartLabel() {
         String myFormat = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
@@ -112,6 +130,10 @@ public class SearchActivity extends AppCompatActivity {
         searchStartDate.setText(sdf.format(searchStartCalendar.getTime()));
     }
 
+    /**
+     * update the input area of end date
+     * @since iGallery version 1.0
+     */
     private void updateEndLabel() {
         String myFormat = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
@@ -120,6 +142,12 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * set an icon before title at toolbar which allow going back to the previous page
+     * @param item menu elements
+     * @return true
+     * @since iGallery version 1.0
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

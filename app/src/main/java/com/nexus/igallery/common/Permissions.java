@@ -10,23 +10,40 @@ import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
-import com.nexus.igallery.views.MainActivity;
-
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
 
-
-
-public class permissions {
+/**
+ * The Permissions class aim to control the permission of app.
+ * iGallery app need Location permission, read and write external storage permission of the phone.
+ * @author Jingbo Lin
+ * @see com.nexus.igallery.views.MainActivity
+ * @since iGallery version 1.0
+ */
+public class Permissions {
 
     static final int REQUEST_READ_EXTERNAL_STORAGE = 2987;
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 7829;
 
+    /**
+     * the method allow app ask for the location permission of phone
+     * @param activity the activity (view) call this method
+     * @see com.nexus.igallery.views.MainActivity
+     * @since iGallery version 1.0
+     */
     public static void requestPermission(Activity activity) {
         ActivityCompat.requestPermissions(activity, new String[]{ACCESS_FINE_LOCATION}, 1);
     }
 
+    /**
+     * the method aim to check the permission of app.
+     * If app currently doesn't have read and write permission for phone will call it.
+     * @param context the context of current activity
+     * @param activity the activity (view) call this method
+     * @see com.nexus.igallery.views.MainActivity
+     * @since iGallery version 1.0
+     */
     public static void checkPermissions(final Context context, Activity activity) {
         int currentAPIVersion = Build.VERSION.SDK_INT;
         if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {

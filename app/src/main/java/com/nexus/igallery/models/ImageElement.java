@@ -1,39 +1,30 @@
-/*
- * Copyright (c) 2017. This code has been developed by Fabio Ciravegna, The University of Sheffield. All rights reserved. No part of this code can be used without the explicit written permission by the author
- */
-
 package com.nexus.igallery.models;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
-import com.nexus.igallery.models.PhotoData;
 
 import java.io.File;
 import java.util.Date;
 
+/**
+ * The class implements the ClusterItem class which work as a temp entity
+ * when user try to use photo map interface
+ * @author Jingbo Lin
+ * @see com.nexus.igallery.views.GalleryMapActivity
+ * @since iGallery version 1.0
+ */
 public class ImageElement implements ClusterItem {
-    public File file=null;
+
     public double lat;
     public double lon;
-    public Date date;
-    public String title;
-    public String description;
     public PhotoData photoData;
     private final LatLng mPosition;
 
-
-
-
-    public ImageElement(File fileX, double lat, double lon, Date date) {
-        file= fileX;
-        this.lat = lat;
-        this.lon = lon;
-        this.date = date;
-        this.mPosition = new LatLng(lat, lon);
-    }
-
-
-
+    /**
+     * constructor to initiate the class instance
+     * @param photoData the photo data which will be showed on the map
+     * @see com.nexus.igallery.views.GalleryMapActivity
+     * @since iGallery version 1.0
+     */
     public ImageElement(PhotoData photoData) {
         this.photoData = photoData;
         lat = photoData.getLat();
@@ -42,6 +33,10 @@ public class ImageElement implements ClusterItem {
     }
 
 
+    /**
+     * provide the photo location
+     * @return a LatLng value which is the same as photo data location
+     */
     @Override
     public LatLng getPosition() {
         return mPosition;

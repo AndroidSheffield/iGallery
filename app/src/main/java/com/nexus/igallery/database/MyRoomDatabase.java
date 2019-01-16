@@ -8,7 +8,16 @@ import android.support.annotation.NonNull;
 
 import com.nexus.igallery.models.PhotoData;
 
-
+/**
+ * A reused code from Week 4 lab class
+ * The abstract class MyRoomDatabase extends the RoomDatabase class enable the use of RoomDatabase
+ * and allow it to access the database.
+ * The entity is PhotoData so that it create a table named PhotoData at the database.
+ * Using DateConverter class to convert Date type value to Long type or from Long type to Data type.
+ * @author Jingbo Lin
+ * @see com.nexus.igallery.viewModels.MyRepository
+ * @since iGallery version 1.0
+ */
 @android.arch.persistence.room.Database(entities = {PhotoData.class}, version = 1, exportSchema = false)
 @TypeConverters({DateConverter.class})
 public abstract class MyRoomDatabase extends RoomDatabase {
@@ -17,6 +26,13 @@ public abstract class MyRoomDatabase extends RoomDatabase {
     // marking the instance as volatile to ensure atomic access to the variable
     private static volatile MyRoomDatabase INSTANCE;
 
+    /**
+     * get a MyRoomDatabase instance and initiate it
+     * @param context the context of current activity
+     * @return an instance of MyRoomDatabase
+     * @see com.nexus.igallery.viewModels.MyRepository
+     * @since iGallery version 1.0
+     */
     public static MyRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (MyRoomDatabase.class) {
