@@ -20,6 +20,7 @@ import java.util.Date;
  * This class aim to realized the function of edit the metadata from database
  * The using permission has been allocated by Prof.Fabio
  * @author Jiachen Yang
+ * @author Jingbo Lin
  * @since iGallery version 1.0
  */
 public class EditActivity extends AppCompatActivity {

@@ -26,12 +26,6 @@ import java.util.Map;
 
 public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    /**
-     * @param googleLatLng is used to save the locations of photos. It includes both longitude and latitude.
-     * @param title and description are used to store description of photos.
-     * @param element is used to cross data from the Class PhotoData.java
-     * @since iGallery version 1.0
-     */
     private LatLng googleLatLng;
     private TextView title, description;
     private PhotoData element;
