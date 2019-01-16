@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
             public void onClick(View view) {
 
                 floatingType = 1;
-                EasyImage.openCameraForImage(getActivity(), 0);
+                EasyImage.openCamera(getActivity(), 0);
             }
         });
 
@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
             @Override
             public void onCanceled(EasyImage.ImageSource source, int type) {
                 //Cancel handling, you might wanna remove taken photo if it was canceled
-                if (source == EasyImage.ImageSource.CAMERA_IMAGE) {
+                if (source == EasyImage.ImageSource.CAMERA) {
                     final File photoFile = EasyImage.lastlyTakenButCanceledPhoto(getActivity());
 
                     if (photoFile != null) photoFile.delete();
