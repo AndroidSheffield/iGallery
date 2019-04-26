@@ -13,7 +13,6 @@ import java.util.Date;
  * lon(double type), title(String type, default "title"), description(String type, default "description"),
  * createDate(Date type for java instance but will convert to Long type by DateConverter when store at database),
  * updateDate(Date type for java instance but will convert to Long type by DateConverter when store at database)
- * @author Jingbo Lin
  * @see com.nexus.igallery.views.EditActivity
  * @see com.nexus.igallery.views.GalleryMapActivity
  * @see com.nexus.igallery.views.MainActivity
