@@ -14,7 +14,6 @@ import java.util.List;
 
 /**
  * DAO class provide the method for Room to operate the database
- * @author Jingbo Lin
  * @see MyRoomDatabase
  * @see com.nexus.igallery.viewModels.MyRepository
  * @since iGallery version 1.0
