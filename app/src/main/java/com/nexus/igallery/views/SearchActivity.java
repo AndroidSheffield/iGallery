@@ -19,7 +19,6 @@ import java.util.Locale;
 /**
  * A searching interface for iGallery app
  * which allow user search the photo data base on its create date, title and description
- * @author Jingbo Lin
  * @see MainActivity
  * @since iGallery version 1.0
  */
