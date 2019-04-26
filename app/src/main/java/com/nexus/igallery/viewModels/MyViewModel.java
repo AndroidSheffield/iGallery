@@ -12,7 +12,6 @@ import java.util.List;
 
 /**
  * The class extends AndroidViewModel and associate with MyRepository to manipulate the database
- * @author Jingbo Lin
  * @see com.nexus.igallery.views.EditActivity
  * @see com.nexus.igallery.views.GalleryMapActivity
  * @see com.nexus.igallery.views.MainActivity
