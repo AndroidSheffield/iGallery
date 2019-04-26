@@ -14,7 +14,6 @@ import java.util.concurrent.ExecutionException;
 /**
  * The class extends ViewModel and aim to call the MyDAO method and insert data into database
  * or retrieve data from it
- * @author Jingbo Lin
  * @see MyViewModel
  * @since iGallery version 1.0
  */
