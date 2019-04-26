@@ -9,12 +9,10 @@ import android.support.annotation.NonNull;
 import com.nexus.igallery.models.PhotoData;
 
 /**
- * A reused code from Week 4 lab class
  * The abstract class MyRoomDatabase extends the RoomDatabase class enable the use of RoomDatabase
  * and allow it to access the database.
  * The entity is PhotoData so that it create a table named PhotoData at the database.
  * Using DateConverter class to convert Date type value to Long type or from Long type to Data type.
- * @author Jingbo Lin
  * @see com.nexus.igallery.viewModels.MyRepository
  * @since iGallery version 1.0
  */
