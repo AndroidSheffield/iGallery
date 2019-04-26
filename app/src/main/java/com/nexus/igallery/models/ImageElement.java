@@ -8,7 +8,6 @@ import java.util.Date;
 /**
  * The class implements the ClusterItem class which work as a temp entity
  * when user try to use photo map interface
- * @author Jingbo Lin
  * @see com.nexus.igallery.views.GalleryMapActivity
  * @since iGallery version 1.0
  */
