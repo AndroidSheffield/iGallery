@@ -20,7 +20,6 @@ import java.util.List;
  * Code was modified base on Week 4 code
  * Display the content of coordinated layout as the recyclerView
  * This class extends RecyclerView.Adapter<MyAdapter.View_Holder> allow showing photo as recycle view
- * @author Jingbo Lin
  * @see EditActivity
  * @see GalleryMapActivity
  * @see MainActivity
