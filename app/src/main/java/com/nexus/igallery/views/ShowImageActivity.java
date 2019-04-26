@@ -29,9 +29,6 @@ import java.util.Date;
  * This class aim to realized the function of showing the image for a grid
  * and it can be used to acquire map function and edit function.
  * The using permission has been allocated by Prof.Fabio
- * @author Ruocheng Ma
- * @author Jiachen Yang
- * @author Jingbo Lin
  * @since iGallery version 1.0
  */
 public class ShowImageActivity extends AppCompatActivity implements OnMapReadyCallback, MyDialogFragment.MDFListener {
