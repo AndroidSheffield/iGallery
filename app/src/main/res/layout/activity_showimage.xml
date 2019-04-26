@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (c) 2017. This code has been developed by Fabio Ciravegna, The University of Sheffield. All rights reserved. No part of this code can be used without the explicit written permission by the author
-  -->
 
 <!--I let all modules stay in center and have appointed ranges with others. All modules have regular size.
  I choose this ScrollView because of too long layout in this activity.-->
