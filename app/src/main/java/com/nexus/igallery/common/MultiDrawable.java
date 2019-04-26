@@ -12,8 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing Permissions and
  * limitations under the License.
- *
- * The permission to use this class has been allocated by Prof.Fabio
  */
 
 package com.nexus.igallery.common;
