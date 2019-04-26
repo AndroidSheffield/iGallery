@@ -44,7 +44,6 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
  * This class learned from demo of Google Maps Android API Utility Library.
  * The using permission has been allocated by Prof.Fabio
  * Demonstrates heavy customisation of the look of rendered clusters.
- * @author Jingbo Lin
  * @see MainActivity
  * @since iGallery version 1.0
  */
