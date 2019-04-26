@@ -54,7 +54,6 @@ import static com.nexus.igallery.common.Permissions.requestPermission;
  * which is also the main interface and show the overview of photos.
  * This class also implements MyDialogFragment.MDFListener which allow activity
  * do the specific reaction toward the dialog fragment
- * @author Jingbo Lin
  * @since iGallery version 1.0
  */
 public class MainActivity extends AppCompatActivity implements MyDialogFragment.MDFListener {
