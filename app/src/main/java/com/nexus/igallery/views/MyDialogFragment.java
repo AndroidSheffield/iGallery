@@ -12,7 +12,6 @@ import com.nexus.igallery.R;
 /**
  * MyDialogFragment extends DialogFragment which allow developer custom the dialog
  * and don't need to create a new class for new dialog window
- * @author Jingbo Lin
  * @see MainActivity
  * @since iGallery version 1.0
  */
