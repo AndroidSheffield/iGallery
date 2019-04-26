@@ -22,7 +22,6 @@ import pl.aprilapps.easyphotopicker.EasyImage;
  * The class provide the static method for views
  * which allow app retrieve all photos from local gallery and store these in database.
  * Meanwhile defining the initial function to config the EasyImage
- * @author Jingbo Lin
  * @see com.nexus.igallery.views.MainActivity
  * @since iGallery version 1.0
  */
