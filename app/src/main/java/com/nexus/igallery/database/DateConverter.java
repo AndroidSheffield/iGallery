@@ -7,7 +7,6 @@ import java.util.Date;
 /**
  * The DateConverter class aim to
  * convert Date type value to Long type value which can be store in database
- * @author Jingbo Lin
  * @see MyRoomDatabase
  * @see com.nexus.igallery.models.PhotoData
  * @since iGallery version 1.0
